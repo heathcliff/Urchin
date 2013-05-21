@@ -56,5 +56,35 @@ Examples:
                         ->limit(10)
                         ->exclude(Node::getNids($entertainment_articles))
                         ->execute();
-                        
-                        
+
+Urchin also contains a series of helper functions useful for rendering page components and getting site-specific parameters:
+
+- Ad::render($adId = null, $width = null, $height = null)
+- Article::getCollection($nid)
+- Gallery::get($node)
+- HomepageCarousel::get()
+- Search::get($search_term = null)
+- Node::getNodes(array $nids)
+- Node::getNids(array $nodes)
+- Node::getNodeData($node)
+- Node::getAuthor($node = null)
+- Node::getCategory($node = null)
+- Node::getExcerpt($node = null)
+- Node::getField($node, $field, $key = 'value', $id = 0, $strip_tags = false)
+- Node::getThumbnail($node = null)
+- Node::getRelated($node = null)
+- Site::getLatestIssueImageUri()
+- Site::isFirstPage()
+- Site::getFallbackImgSrc()
+- Site::getSharedPath($view_name)
+- Site::getLibPath($lib_name)
+- Site::getRequestURI()
+- Taxonomy::getFieldName($vid)
+- Taxonomy::getSeriesInfo($node = null)
+- Taxonomy::getTermInfo($term = null)
+- Taxonomy::getTids($field, $language)
+- Utility::trimText($text, $length = 80, $append = '...')
+- Video::getFeaturedVideo($field_article_video)
+- Video::renderEmbed($embed = null)
+- Video::renderYouTubeEmbed($id = null, $width = 640, $height = 390)
+- Video::getYouTubeImageURL($node = null)
