@@ -88,3 +88,20 @@ Urchin also contains a series of helper functions useful for rendering page comp
 - Video::renderEmbed($embed = null)
 - Video::renderYouTubeEmbed($id = null, $width = 640, $height = 390)
 - Video::getYouTubeImageURL($node = null)
+
+Finally, Urchin contains a file that contains globally-declared variables aimed at preventing the proliferation of specific category names, series names, and node IDs throughout the project. If you need to refer to a specific node ID or category ID in your template or helper, declar a global variable in globals.php and only reference the global variable. Example:
+
+    <?php
+    // Article node types
+    $GLOBALS['article_node_types'] = array('article_text', 'article_blog', 'article_video', 'article_gallery', 'poll');
+            
+    // Categories
+    $GLOBALS['category_news']              = 1;
+    $GLOBALS['category_entertainment']     = 3;
+    $GLOBALS['category_oneohone']          = 25;
+    $GLOBALS['category_grow']              = 21;
+    
+    // Collections
+    $GLOBALS['sidebar_featured_gallery']    = 206;
+    $GLOBALS['sidebar_whats_smokin']        = 205;
+    $GLOBALS['sponsored_links']             = 19314;
