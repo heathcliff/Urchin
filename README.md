@@ -35,7 +35,6 @@ Urchin contains the following chainable functions used for querying for articles
 - Article::get($type)
 - Article::category($category)
 - Article::series($series)
-- Article::getCollection($nid)
 - Pager::limit($limit)
 
 Examples:
