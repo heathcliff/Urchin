@@ -1,14 +1,14 @@
 <?php
 
-class Base {  
-      
+class Base {
+
     public $currentQuery;
-    
+
     public function recent() {
         $this->currentQuery->propertyOrderBy('created', 'DESC');
         return $this;
     }
-    
+
     public function field($field_name, $field_value) {
         if (isset($field_value)) {
             if(!is_array($field_value)) {
@@ -18,7 +18,7 @@ class Base {
         }
         return $this;
     }
-    
+
     public function exclude($exclude) {
         if (isset($exclude)) {
             if(!is_array($exclude)) {
@@ -28,7 +28,7 @@ class Base {
         }
         return $this;
     }
-    
+
     public function limit($limit) {
         if (isset($limit)) {
             $this->currentQuery->range(0, $limit);
@@ -37,7 +37,7 @@ class Base {
         }
         return $this;
     }
-    
+
     public function vocabularyTerm($vocabulary, $term) {
         if (isset($vocabulary) && isset($term)) {
             if(!is_array($term)) {
@@ -47,7 +47,7 @@ class Base {
                 $this->currentQuery->fieldCondition(Taxonomy::getFieldName($vocabulary), 'tid', $term, 'IN');
             }
         }
-        
+
         return $this;
     }
 
