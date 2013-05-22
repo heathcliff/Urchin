@@ -1,6 +1,6 @@
 <?php
 
-require_once('Globals.php');
+require_once(path_to_theme() . '/lib/UrchinGlobals.php');
 require_once('classes/Site.php');
 require_once('classes/Base.php');
 require_once('classes/Node.php');

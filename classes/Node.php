@@ -29,7 +29,7 @@ class Node {
 
     public static function getNodeData($node) {
         if (class_exists('UrchinCustomizations') && method_exists('UrchinCustomizations', 'getNodeData')) {
-            return Customizations::getNodeData($node);
+            return UrchinCustomizations::getNodeData($node);
         } else {
             $data = array(
                 'nid'               => $node->nid,
