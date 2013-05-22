@@ -83,7 +83,7 @@ class Node {
                         return array(
                             'tid'       => $tid,
                             'name'      => $term->name,
-                            'excerpt'   => Node::getField($author, 'field_excerpt'),
+                            'excerpt'   => Node::getField($term, 'field_excerpt'),
                             'image_uri' => Node::getThumbnail($term),
                             'path'      => '/' . drupal_lookup_path('alias', 'taxonomy/term/' . $tid),
                         );
@@ -111,15 +111,16 @@ class Node {
     public static function getField($node, $field, $key = 'value', $id = 0, $strip_tags = false, $multiple = false) {
         if (isset($node) && isset($field) && !empty($node->$field)) {
             $node_field = $node->$field;
+            $node_language = (isset($node->language)) ? $node->language : LANGUAGE_NONE;
             if ($multiple && $key == 'nid') {
-                foreach ($node_field[$node->language] as $f) {
+                foreach ($node_field[$node_language] as $f) {
                     $nids[] = $f['nid'];
                 }
                 return Node::getNodes($nids);
             } else if ($strip_tags) {
-                $result = strip_tags($node_field[$node->language][$id][$key]);
+                $result = strip_tags($node_field[$node_language][$id][$key]);
             } else {
-                $result = $node_field[$node->language][$id][$key];
+                $result = $node_field[$node_language][$id][$key];
             }
             return $result;
         }
@@ -128,11 +129,12 @@ class Node {
 
     public static function getThumbnail($node = null) {
         if ($node) {
-            if (isset($node->field_image[$node->language][0]['uri'])) {
-                return $node->field_image[$node->language][0]['uri'];
-            } else if (isset($node->field_gallery_image[$node->language][0]['uri'])) {
+            $node_language = (isset($node->language)) ? $node->language : LANGUAGE_NONE;
+            if (isset($node->field_image[$node_language][0]['uri'])) {
+                return $node->field_image[$node_language][0]['uri'];
+            } else if (isset($node->field_gallery_image[$node_language][0]['uri'])) {
                 //fall back to the gallery image if there's no field image.
-                return $node->field_gallery_image[$node->language][0]['uri'];
+                return $node->field_gallery_image[$node_language][0]['uri'];
             } else {
                 return false;
             }
