@@ -1,18 +1,19 @@
 <?php
 
 class Node {
-    /**
-    * returns node data arrays given an array of node ids
-    */
-    public static function getNodes(array $nids) {
-        $node_data = array();
+    
+    public static function getNodes($nids) {
+        if(!is_array($nids)) {
+            $nids = array($nids);
+        }
+        $nodes = array();
         foreach ($nids as $nid) {
             $node = node_load($nid);
             if ($node) {
-                $node_data[] = self::getNodeData($node);
+                $nodes[] = self::getNodeData($node);
             }
         }
-        return $node_data;
+        return $nodes;
     }
 
     public static function getNids(array $nodes) {
