@@ -2,6 +2,16 @@
 
 class Taxonomy
 {
+
+    public static function getTerm($tid) {
+        if (isset($tid)) {
+            $term = taxonomy_term_load($tid);
+            if ($term) {
+                return self::getTermInfo($term);
+            }
+        }
+    }
+
     public static function getTermInfo($term = null) {
         if ($term) {
             return array(

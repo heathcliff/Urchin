@@ -14,7 +14,7 @@ class Node {
         }
         return $node_data;
     }
-    
+
     public static function getNids(array $nodes) {
         $nids = array();
         foreach ($nodes as $n) {
@@ -24,61 +24,28 @@ class Node {
         }
         return $nids;
     }
-    
+
     public static function getNodeData($node) {
-        $node_data = array(
+        $data = array(
             'nid'               => $node->nid,
-            'type'              => $node->type,
+            'type'              => str_replace('article_', '', strtolower($node->type)),
             'created'           => $node->created,
-            'author_nid'        => Node::getField($node, 'field_author', 'nid'),
-            'title'             => strip_tags(html_entity_decode($node->title)),
-            'byline'            => Node::getField($node, 'field_byline', 'value', 0, true),
+            'author_nid'        => Node::getField($node, 'field_author', 'nid'), // TODO: AUTHOR NAME
+            'title'             => $node->title,
             'image_uri'         => Node::getThumbnail($node),
-            'embed'             => Node::getField($node, 'field_embed'),
             'youtube_id'        => Node::getField($node, 'field_youtube_id'),
-            'youtube_image_url' => Video::getYouTubeImageURL($node),
             'excerpt'           => Node::getExcerpt($node),
-            'date'              => date('D M j, Y', $node->created),
             'path'              => '/' . drupal_lookup_path('alias', 'node/' . $node->nid),
-            'category'          => Node::getCategory($node),
-            'series'            => '',
         );
-        switch ($node->type) {
-            case 'article_text':
-                $node_data['type'] = 'Text';
-                break;
-            case 'article_video':
-                $node_data['type'] = 'Video';
-                break;
-            case 'article_gallery':
-                $node_data['type'] = 'Gallery';
-                break;
-            default:
-                $node_data['type'] = $node->type;
-                break;
+        if ($node->type == 'event') {
+            $data['date']   = Node::getField($node, 'field_date');
+            $data['city']   = Taxonomy::getTerm(Node::getField($node, 'field_city', 'tid'));
+            $data['venue']  = Node::getField($node, 'field_venue');
+            $data['artist'] = Node::getField($node, 'field_artist');
         }
-        
-        if ($node->type == 'carousel_homepage') {
-            $carousel_items = array();
-            foreach ($node->field_carousel_image[$node->language] as $key => $image) {
-                if (isset($image['uri'])) {
-                    $carousel_items[] = array(
-                        'image_uri' => $image['uri'],
-                        'title'     => Node::getField($node, 'field_carousel_title', 'value', $key),
-                        'body'      => Node::getField($node, 'field_carousel_body', 'value', $key),
-                        'link'      => Node::getField($node, 'field_carousel_link', 'value', $key),
-                    );
-                }
-            }
-            $node_data['is_fullscreen']  = (Node::getField($node, 'field_carousel_fullscreen') == "1");
-            $node_data['carousel_items'] = $carousel_items;
-        } else if ($node->type == $GLOBALS['node_type_link']) {
-            $node_data['link'] = Node::getField($node, 'field_url');
-            $node_data['body'] = Node::getField($node, 'body');
-        }
-        return $node_data;
+        return $data;
     }
-    
+
     public static function getAuthor($node = null) {
         if ($node && isset($node->field_author[$node->language][0]['nid'])) {
             $author = node_load($node->field_author[$node->language][0]['nid']);
@@ -92,7 +59,7 @@ class Node {
         }
         return false;
     }
-    
+
     public static function getCategory($node = null) {
         if ($node) {
             if (isset($node->field_category[$node->language][0]['tid'])) {
@@ -118,11 +85,16 @@ class Node {
         }
         return false;
     }
-    
-    public static function getField($node, $field, $key = 'value', $id = 0, $strip_tags = false) {
+
+    public static function getField($node, $field, $key = 'value', $id = 0, $strip_tags = false, $multiple = false) {
         if (isset($node) && isset($field) && !empty($node->$field)) {
             $node_field = $node->$field;
-            if($strip_tags) {
+            if ($multiple && $key == 'nid') {
+                foreach ($node_field[$node->language] as $f) {
+                    $nids[] = $f['nid'];
+                }
+                return Node::getNodes($nids);
+            } else if ($strip_tags) {
                 $result = strip_tags($node_field[$node->language][$id][$key]);
             } else {
                 $result = $node_field[$node->language][$id][$key];
@@ -131,7 +103,7 @@ class Node {
         }
         return false;
     }
-    
+
     public static function getThumbnail($node = null) {
         if ($node) {
             if (isset($node->field_image[$node->language][0]['uri'])) {
@@ -143,7 +115,7 @@ class Node {
         }
         return false;
     }
-    
+
     /**
      * returns an array of nodes related to a provided node by tags, series, or category
      */
@@ -166,7 +138,7 @@ class Node {
                   ->orderBy('created', 'DESC')
                   ->range(0,3)
                   ->groupBy('n.nid');
-            
+
             if ($tags || $series || $category) {
                 if ($tags) {
                     $or->condition('field_tag.field_tag_tid', $tags, 'IN');
@@ -179,9 +151,9 @@ class Node {
                 }
                 $query->condition($or);
             }
-            
+
             $result = $query->execute()->fetchAll(PDO::FETCH_ASSOC);
-            
+
             if (isset($result[0]['nid'])) {
                 $nids = array();
                 foreach ($result as $r) {
@@ -196,5 +168,5 @@ class Node {
         }
         return false;
     }
-    
+
 }
