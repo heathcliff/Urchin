@@ -55,9 +55,11 @@ class Node {
                 $author = node_load($nid);
                 if ($author) {
                     return array(
+                        'nid'       => $author->nid,
                         'name'      => $author->title,
                         'excerpt'   => Node::getField($author, 'field_excerpt'),
                         'image_uri' => Node::getThumbnail($author),
+                        'path'      => '/' . drupal_lookup_path('alias', 'node/' . $author->nid),
                     );
                 }
             }
@@ -71,7 +73,11 @@ class Node {
                 $tid  = $node->field_category[$node->language][0]['tid'];
                 $term = taxonomy_term_load($tid);
                 $name = $term->name;
-                return array('tid' => $tid, 'name' => $name);
+                return array(
+                    'tid'  => $tid,
+                    'name' => $name,
+                    'path' => '/' . drupal_lookup_path('alias', 'taxonomy/term/' . $tid),
+                );
             }
         }
         return false;
