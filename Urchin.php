@@ -15,4 +15,4 @@ require_once('classes/Ad.php');
 require_once('classes/Magazine.php');
 require_once('classes/Utility.php');
 
-include('Customizations.php');
+include(path_to_theme() . '/lib/UrchinCustomizations.php');
