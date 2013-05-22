@@ -12,6 +12,7 @@ require_once('classes/Taxonomy.php');
 require_once('classes/Search.php');
 require_once('classes/HomepageCarousel.php');
 require_once('classes/Ad.php');
+require_once('classes/Magazine.php');
 require_once('classes/Utility.php');
 
 include('project.php');
