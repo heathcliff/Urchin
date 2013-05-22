@@ -1,3 +1,5 @@
+![Urchin](/img/logo.png)
+
 Urchin contains the bulk of the business logic and data parsing functions that make up the core of our Drupal-based publishing platform. Helper classes for parsing nodes, getting lists of nodes and nids, and accessing fields are available, with the overall goal of providing a solid kick-start to any Drupal-based editorial site.
 
 Installation
