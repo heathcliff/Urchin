@@ -5,24 +5,22 @@ Urchin contains the bulk of the business logic and data parsing functions that m
 Installation
 --
 
-Urchin must be placed in your template's lib directory. Rather than copy the files manually, though, it's best to add Urchin as a git submodule. This allows for easy command-line updating in the future. From the base of your Drupal project, add Urchin as a git submodule. For example, assume your project root is similar to this: 
+Urchin should be placed in your template's lib directory. Rather than copy the files manually, though, it's better to add Urchin as a git submodule. This allows for easy command-line updating in the future. From the base of your Drupal project, add Urchin as a git submodule by running the following commands from the project root:
 
-    /projects/hightimes
-    - .git
-    - .gitignore
-    - drupal
-    - frontend
-    - index.html
-
-Run the following commands:
-
-    $ cd /projects/hightimes
-    $ git submodule add git@github.com:AsheAvenue/Urchin.git drupal/sites/all/themes/hightimes/lib/Urchin
+    $ git submodule add git@github.com:AsheAvenue/Urchin.git drupal/sites/all/themes/<theme_name>/lib/Urchin
  
 Urchin will then be included in your project. To reference it within your project, add the following line to the top of your template.php file, just after the opening PHP tag:
 
     require_once('lib/Urchin/Urchin.php');
-    
+
+Updating Urchin
+--
+
+To update Urchin, run the following commands from the project root:
+
+    $ cd drupal/sites/all/themes/<theme_name>/lib/Urchin
+    $ git pull origin master
+
 Reference
 --
 
