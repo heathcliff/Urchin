@@ -1,7 +1,7 @@
 <?php
 
 class Node {
-    
+
     public static function getNodes($nids) {
         if(!is_array($nids)) {
             $nids = array($nids);
@@ -31,7 +31,9 @@ class Node {
             'nid'               => $node->nid,
             'type'              => str_replace('article_', '', strtolower($node->type)),
             'created'           => $node->created,
-            'author_nid'        => Node::getField($node, 'field_author', 'nid'), // TODO: AUTHOR NAME
+            'author'            => Node::getAuthor($node),
+            'author_nid'        => Node::getField($node, 'field_author', 'nid'),
+            'byline'            => Node::getField($node, 'field_byline'),
             'title'             => $node->title,
             'image_uri'         => Node::getThumbnail($node),
             'youtube_id'        => Node::getField($node, 'field_youtube_id'),
@@ -47,15 +49,18 @@ class Node {
         return $data;
     }
 
-    public static function getAuthor($node = null) {
-        if ($node && isset($node->field_author[$node->language][0]['nid'])) {
-            $author = node_load($node->field_author[$node->language][0]['nid']);
-            if ($author) {
-                return array(
-                    'name'      => $author->title,
-                    'excerpt'   => $author->field_excerpt[$author->language][0]['value'],
-                    'image_uri' => $author->field_image[$author->language][0]['uri'],
-                );
+    public static function getAuthor($node) {
+        if (isset($node)) {
+            $nid = Node::getField($node, 'field_author', 'nid');
+            if ($nid) {
+                $author = node_load($nid);
+                if ($author) {
+                    return array(
+                        'name'      => $author->title,
+                        'excerpt'   => Node::getField($author, 'field_excerpt'),
+                        'image_uri' => Node::getThumbnail($author),
+                    );
+                }
             }
         }
         return false;
@@ -76,7 +81,7 @@ class Node {
     public static function getExcerpt($node = null) {
         if ($node) {
             if (isset($node->field_excerpt[$node->language][0]['value'])) {
-                return Utility::trimText(strip_tags($node->field_excerpt[$node->language][0]['value']), 275);
+                return strip_tags($node->field_excerpt[$node->language][0]['value']);
             } else if (isset($node->body[$node->language][0]['value'])) {
                 $body_array = explode("\n", $node->body[$node->language][0]['value']);
                 if (isset($body_array[0]) && strlen($body_array[0]) > 0) {
@@ -112,6 +117,8 @@ class Node {
             } else if (isset($node->field_gallery_image[$node->language][0]['uri'])) {
                 //fall back to the gallery image if there's no field image.
                 return $node->field_gallery_image[$node->language][0]['uri'];
+            } else {
+                return false;
             }
         }
         return false;

@@ -13,7 +13,7 @@ class Site {
     * returns a fallback image source for articles with no thumbnail
     */
     public static function getFallbackImgSrc() {
-        return 'http://high-times-assets.s3.amazonaws.com/static/placeholder.jpg';
+        return path_to_theme() . '/img/placeholder.jpg';
     }
 
     /**

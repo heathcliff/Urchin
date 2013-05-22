@@ -54,7 +54,7 @@ class Article extends Base {
 
     public static function getColumnists($limit = 4) {
         $query = db_select('node', 'n');
-        $query->leftJoin('field_data_field_author', 'field_author', 'n.nid = field_author.entity_id');
+        $query->join('field_data_field_author', 'field_author', 'n.nid = field_author.entity_id');
         $query->fields('n', array('nid'))
               ->condition('type', $GLOBALS['article_node_types'])
               ->groupBy('field_author.field_author_nid')
