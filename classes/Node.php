@@ -10,7 +10,8 @@ class Node {
         foreach ($nids as $nid) {
             $node = node_load($nid);
             if ($node) {
-                $nodes[] = self::getNodeData($node);
+                $data = self::getNodeData($node);
+                $nodes[] = $data;
             }
         }
         return $nodes;
@@ -27,24 +28,28 @@ class Node {
     }
 
     public static function getNodeData($node) {
-        $data = array(
-            'nid'               => $node->nid,
-            'type'              => str_replace('article_', '', strtolower($node->type)),
-            'created'           => $node->created,
-            'author_nid'        => Node::getField($node, 'field_author', 'nid'), // TODO: AUTHOR NAME
-            'title'             => $node->title,
-            'image_uri'         => Node::getThumbnail($node),
-            'youtube_id'        => Node::getField($node, 'field_youtube_id'),
-            'excerpt'           => Node::getExcerpt($node),
-            'path'              => '/' . drupal_lookup_path('alias', 'node/' . $node->nid),
-        );
-        if ($node->type == 'event') {
-            $data['date']   = Node::getField($node, 'field_date');
-            $data['city']   = Taxonomy::getTerm(Node::getField($node, 'field_city', 'tid'));
-            $data['venue']  = Node::getField($node, 'field_venue');
-            $data['artist'] = Node::getField($node, 'field_artist');
+        if (class_exists('Customizations') && method_exists('Customizations', 'getNodeData')) {
+            return Customizations::getNodeData($node);
+        } else {
+            $data = array(
+                'nid'               => $node->nid,
+                'type'              => str_replace('article_', '', strtolower($node->type)),
+                'created'           => $node->created,
+                'author_nid'        => Node::getField($node, 'field_author', 'nid'), // TODO: AUTHOR NAME
+                'title'             => $node->title,
+                'image_uri'         => Node::getThumbnail($node),
+                'youtube_id'        => Node::getField($node, 'field_youtube_id'),
+                'excerpt'           => Node::getExcerpt($node),
+                'path'              => '/' . drupal_lookup_path('alias', 'node/' . $node->nid),
+            );
+            if ($node->type == 'event') {
+                $data['date']   = Node::getField($node, 'field_date');
+                $data['city']   = Taxonomy::getTerm(Node::getField($node, 'field_city', 'tid'));
+                $data['venue']  = Node::getField($node, 'field_venue');
+                $data['artist'] = Node::getField($node, 'field_artist');
+            }
+            return $data;
         }
-        return $data;
     }
 
     public static function getAuthor($node = null) {
