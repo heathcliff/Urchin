@@ -107,3 +107,9 @@ Finally, Urchin contains a file that contains globally-declared variables aimed 
     $GLOBALS['sidebar_featured_gallery']    = 206;
     $GLOBALS['sidebar_whats_smokin']        = 205;
     $GLOBALS['sponsored_links']             = 19314;
+    
+Acknowledgements
+--
+Mad props to Heath Beckett for originating most of this code.
+
+<a href="http://thenounproject.com/noun/totoro/#icon-No3424" target="_blank">Totoro</a> designed by <a href="http://thenounproject.com/nithindavis" target="_blank">Nithin Davis Nanthikkara</a> from The Noun Project
