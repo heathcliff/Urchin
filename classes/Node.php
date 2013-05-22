@@ -49,38 +49,49 @@ class Node {
     }
 
     public static function getAuthor($node) {
-        if (isset($node)) {
-            $nid = Node::getField($node, 'field_author', 'nid');
-            if ($nid) {
-                $author = node_load($nid);
-                if ($author) {
-                    return array(
-                        'nid'       => $author->nid,
-                        'name'      => $author->title,
-                        'excerpt'   => Node::getField($author, 'field_excerpt'),
-                        'image_uri' => Node::getThumbnail($author),
-                        'path'      => '/' . drupal_lookup_path('alias', 'node/' . $author->nid),
-                    );
+        if (class_exists('UrchinCustomizations') && method_exists('UrchinCustomizations', 'getAuthor')) {
+            return UrchinCustomizations::getAuthor($node);
+        } else {
+            if (isset($node)) {
+                $nid = Node::getField($node, 'field_author', 'nid');
+                if ($nid) {
+                    $author = node_load($nid);
+                    if ($author) {
+                        return array(
+                            'nid'       => $author->nid,
+                            'name'      => $author->title,
+                            'excerpt'   => Node::getField($author, 'field_excerpt'),
+                            'image_uri' => Node::getThumbnail($author),
+                            'path'      => '/' . drupal_lookup_path('alias', 'node/' . $author->nid),
+                        );
+                    }
                 }
             }
+            return false;
         }
-        return false;
     }
 
-    public static function getCategory($node = null) {
-        if ($node) {
-            if (isset($node->field_category[$node->language][0]['tid'])) {
-                $tid  = $node->field_category[$node->language][0]['tid'];
-                $term = taxonomy_term_load($tid);
-                $name = $term->name;
-                return array(
-                    'tid'  => $tid,
-                    'name' => $name,
-                    'path' => '/' . drupal_lookup_path('alias', 'taxonomy/term/' . $tid),
-                );
+    public static function getCategory($node ) {
+        if (class_exists('UrchinCustomizations') && method_exists('UrchinCustomizations', 'getCategory')) {
+            return UrchinCustomizations::getCategory($node);
+        } else {
+            if (isset($node)) {
+                $tid = Node::getField($node, 'field_category', 'tid');
+                if ($tid) {
+                    $term = taxonomy_term_load($tid);
+                    if ($term) {
+                        return array(
+                            'tid'       => $tid,
+                            'name'      => $term->name,
+                            'excerpt'   => Node::getField($author, 'field_excerpt'),
+                            'image_uri' => Node::getThumbnail($term),
+                            'path'      => '/' . drupal_lookup_path('alias', 'taxonomy/term/' . $tid),
+                        );
+                    }
+                }
             }
+            return false;
         }
-        return false;
     }
 
     public static function getExcerpt($node = null) {
