@@ -1,6 +1,6 @@
 <?php
 
-require_once(path_to_theme() . '/lib/UrchinGlobals.php');
+require_once(drupal_get_path('theme', variable_get('theme_default', NULL)) . '/lib/UrchinGlobals.php');
 require_once('classes/Site.php');
 require_once('classes/Base.php');
 require_once('classes/Node.php');
@@ -15,4 +15,4 @@ require_once('classes/Ad.php');
 require_once('classes/Magazine.php');
 require_once('classes/Utility.php');
 
-include(path_to_theme() . '/lib/UrchinCustomizations.php');
+include(drupal_get_path('theme', variable_get('theme_default', NULL)) . '/lib/UrchinCustomizations.php');

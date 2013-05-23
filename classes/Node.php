@@ -143,56 +143,62 @@ class Node {
     }
 
     /**
-     * returns an array of nodes related to a provided node by tags, series, or category
+     * returns an array of nodes related to a provided node by tags, category, or both
      */
-    public static function getRelated($node = null)
-    {
-        if ($node) {
-            $tags     = Taxonomy::getTids($node->field_tag, $node->language);
-            $series   = Taxonomy::getTids($node->field_series, $node->language);
-            $category = Taxonomy::getTids($node->field_category, $node->language);
+    public static function getRelated($node = null, $limit = 3, $category_only = true, $tags_only = false) {
+        if (class_exists('UrchinCustomizations') && method_exists('UrchinCustomizations', 'getRelated')) {
+            return UrchinCustomizations::getRelated($node);
+        } else {
+            if ($node) {
+                $tags     = Taxonomy::getTids($node->field_tag, $node->language);
+                $category = Taxonomy::getTids($node->field_category, $node->language);
 
-            $query = db_select('node', 'n');
-            $query->leftJoin('field_data_field_tag', 'field_tag', 'n.nid = field_tag.entity_id');
-            $query->leftJoin('field_data_field_series', 'field_series', 'n.nid = field_series.entity_id');
-            $query->leftJoin('field_data_field_category', 'field_category', 'n.nid = field_category.entity_id');
-            $or = db_or();
-            $query->fields('n', array('nid'))
-                  ->condition('status', 1)
-                  ->condition('type', $GLOBALS['article_node_types'])
-                  ->condition('n.nid', $node->nid, '!=')
-                  ->orderBy('created', 'DESC')
-                  ->range(0,3)
-                  ->groupBy('n.nid');
+                $query = db_select('node', 'n');
 
-            if ($tags || $series || $category) {
-                if ($tags) {
-                    $or->condition('field_tag.field_tag_tid', $tags, 'IN');
+                if ($category_only) {
+                    $query->leftJoin('field_data_field_category', 'field_category', 'n.nid = field_category.entity_id');
+                } else if ($tags_only) {
+                    $query->leftJoin('field_data_field_tag', 'field_tag', 'n.nid = field_tag.entity_id');
+                } else {
+                    $query->leftJoin('field_data_field_category', 'field_category', 'n.nid = field_category.entity_id');
+                    $query->leftJoin('field_data_field_tag', 'field_tag', 'n.nid = field_tag.entity_id');
                 }
-                if ($series) {
-                    $or->condition('field_series.field_series_tid', $series, 'IN');
-                }
-                if ($category) {
-                    $or->condition('field_category.field_category_tid', $category, 'IN');
-                }
-                $query->condition($or);
-            }
 
-            $result = $query->execute()->fetchAll(PDO::FETCH_ASSOC);
+                $or = db_or();
+                $query->fields('n', array('nid'))
+                      ->condition('status', 1)
+                      ->condition('type', $GLOBALS['article_node_types'])
+                      ->condition('n.nid', $node->nid, '!=')
+                      ->orderBy('created', 'DESC')
+                      ->range(0, $limit)
+                      ->groupBy('n.nid');
 
-            if (isset($result[0]['nid'])) {
-                $nids = array();
-                foreach ($result as $r) {
-                    if (isset($r['nid'])) {
-                        $nids[] = $r['nid'];
+                if ($tags || $category) {
+                    if ($tags && !$category_only) {
+                        $or->condition('field_tag.field_tag_tid', $tags, 'IN');
+                    }
+                    if ($category && !$tags_only) {
+                        $or->condition('field_category.field_category_tid', $category, 'IN');
+                    }
+                    $query->condition($or);
+                }
+
+                $result = $query->execute()->fetchAll(PDO::FETCH_ASSOC);
+
+                if (isset($result[0]['nid'])) {
+                    $nids = array();
+                    foreach ($result as $r) {
+                        if (isset($r['nid'])) {
+                            $nids[] = $r['nid'];
+                        }
+                    }
+                    if ($nids) {
+                        return self::getNodes($nids);
                     }
                 }
-                if ($nids) {
-                    return self::getNodes($nids);
-                }
             }
+            return false;
         }
-        return false;
     }
 
 }
