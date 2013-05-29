@@ -38,6 +38,20 @@ class Base {
         return $this;
     }
 
+    public function count() {
+        $result = $this->currentQuery->count()->execute();
+        return $result;
+    }
+
+    public function pager($limit) {
+        if (isset($limit)) {
+            $this->currentQuery->pager($limit);
+        } else {
+            $this->currentQuery->pager(14);
+        }
+        return $this;
+    }
+
     public function vocabularyTerm($vocabulary, $term) {
         if (isset($vocabulary) && isset($term)) {
             if(!is_array($term)) {
@@ -47,7 +61,6 @@ class Base {
                 $this->currentQuery->fieldCondition(Taxonomy::getFieldName($vocabulary), 'tid', $term, 'IN');
             }
         }
-
         return $this;
     }
 

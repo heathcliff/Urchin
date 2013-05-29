@@ -2,7 +2,7 @@
 
 class Article extends Base {
 
-    public static function get($type) {
+    public static function get($type = null) {
         $_instance = new self;
         $query = new EntityFieldQuery();
         $query->entityCondition('entity_type', 'node')

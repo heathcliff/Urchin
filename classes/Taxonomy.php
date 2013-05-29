@@ -24,6 +24,16 @@ class Taxonomy
         return false;
     }
 
+    public static function getChildren($tid) {
+        if (isset($tid)) {
+            $children = array_keys(taxonomy_get_children($tid));
+            if ($children) {
+                return $children;
+            }
+        }
+        return false;
+    }
+
     public static function getSeriesInfo($node = null) {
         if ($node) {
             if (isset($node->field_series[$node->language][0]['tid'])) {
@@ -41,14 +51,11 @@ class Taxonomy
     */
     public static function getFieldName($vid) {
         switch ($vid) {
-            case 1:
+            case $GLOBALS['tag']:
                 return 'field_tag';
                 break;
-            case 2:
+            case $GLOBALS['category']:
                 return 'field_category';
-                break;
-            case 3:
-                return 'field_series';
                 break;
             default:
                 return false;
