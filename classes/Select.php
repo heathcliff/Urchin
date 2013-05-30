@@ -23,9 +23,22 @@ class Select extends Base {
     }
 
     public function popular() {
-        // orders the results using the statistics module node counter
         $this->currentQuery->join('node_counter', 'counter', 'n.nid = counter.nid');
         $this->currentQuery->orderBy('counter.totalcount', 'DESC');
+        return $this;
+    }
+
+    public function vocabularyTerm($vocabulary, $tid) {
+        if (isset($vocabulary) && isset($tid)) {
+            if(!is_array($tid)) {
+                $tid = array($tid);
+            }
+            $field = Taxonomy::getFieldName($vocabulary);
+            if ($field) {
+                $this->currentQuery->join('field_data_'.$field, $field, 'n.nid = '.$field.'.entity_id');
+                $this->currentQuery->condition($field . '.' . $field . '_tid', $tid, 'IN');
+            }
+        }
         return $this;
     }
 
