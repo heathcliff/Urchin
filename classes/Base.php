@@ -9,12 +9,17 @@ class Base {
         return $this;
     }
 
-    public function field($field_name, $field_value) {
+    public function alpha($order = 'ASC') {
+        $this->currentQuery->propertyOrderBy('title', $order);
+        return $this;
+    }
+
+    public function field($field_name, $field_value, $key = 'value') {
         if (isset($field_value)) {
             if(!is_array($field_value)) {
                 $field_value = array($field_value);
             }
-            $this->currentQuery->fieldCondition($field_name, 'tid', $field_value, 'IN');
+            $this->currentQuery->fieldCondition($field_name, $key, $field_value, 'IN');
         }
         return $this;
     }
