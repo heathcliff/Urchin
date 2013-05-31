@@ -22,6 +22,11 @@ class Select extends Base {
         return $_instance;
     }
 
+    public function recent() {
+        $this->currentQuery->orderBy('n.created', 'DESC');
+        return $this;
+    }
+
     public function popular() {
         $this->currentQuery->join('node_counter', 'counter', 'n.nid = counter.nid');
         $this->currentQuery->orderBy('counter.totalcount', 'DESC');
@@ -37,6 +42,16 @@ class Select extends Base {
             if ($field) {
                 $this->currentQuery->join('field_data_'.$field, $field, 'n.nid = '.$field.'.entity_id');
                 $this->currentQuery->condition($field . '.' . $field . '_tid', $tid, 'IN');
+            }
+        }
+        return $this;
+    }
+
+    public function groupBy($vocabulary = null) {
+        if ($vocabulary) {
+            $field = Taxonomy::getFieldName($vocabulary);
+            if ($field) {
+                $this->currentQuery->groupBy($field.'.'.$field.'_tid');
             }
         }
         return $this;
