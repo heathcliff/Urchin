@@ -27,9 +27,9 @@ class Base {
     public function exclude($exclude) {
         if (isset($exclude)) {
             if(!is_array($exclude)) {
-                $nids = array($exclude);
+                $exclude = array($exclude);
             }
-            $this->currentQuery->propertyCondition('nid', $nids, 'NOT IN');
+            $this->currentQuery->propertyCondition('nid', $exclude, 'NOT IN');
         }
         return $this;
     }
