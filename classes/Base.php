@@ -4,6 +4,11 @@ class Base {
 
     public $currentQuery;
 
+    public function sticky() {
+        $this->currentQuery->propertyOrderBy('sticky', 'DESC');
+        return $this;
+    }
+
     public function recent() {
         $this->currentQuery->propertyOrderBy('created', 'DESC');
         return $this;
