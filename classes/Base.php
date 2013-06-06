@@ -9,6 +9,17 @@ class Base {
         return $this;
     }
 
+    public function dateBetween($start, $stop) {
+        $this->currentQuery->fieldCondition('field_date', 'value', $start, '>');
+        $this->currentQuery->fieldCondition('field_date', 'value', $stop, '<');
+        return $this;
+    }
+
+    public function date() {
+        $this->currentQuery->fieldOrderBy('field_date', 'value', 'ASC');
+        return $this;
+    }
+
     public function recent() {
         $this->currentQuery->propertyOrderBy('created', 'DESC');
         return $this;
