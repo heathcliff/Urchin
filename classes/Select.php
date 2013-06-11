@@ -30,6 +30,7 @@ class Select extends Base {
     public function popular() {
         $this->currentQuery->join('node_counter', 'counter', 'n.nid = counter.nid');
         $this->currentQuery->orderBy('counter.totalcount', 'DESC');
+        $this->currentQuery->groupBy('n.nid');
         return $this;
     }
 
