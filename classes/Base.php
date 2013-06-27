@@ -63,21 +63,13 @@ class Base {
         return $this;
     }
 
-    public function limit($limit) {
-        if (isset($limit)) {
-            $this->currentQuery->range(0, $limit);
-        } else {
-            $this->currentQuery->range(0, 14);
-        }
+    public function limit($limit = 14) {
+        $this->currentQuery->range(0, $limit);
         return $this;
     }
 
-    public function pager($limit) {
-        if (isset($limit)) {
-            $this->currentQuery->pager($limit);
-        } else {
-            $this->currentQuery->pager(14);
-        }
+    public function pager($limit = 14) {
+        $this->currentQuery->pager($limit);
         return $this;
     }
 
