@@ -4,11 +4,6 @@ class Base {
 
     public $currentQuery;
 
-    public function alpha($order = 'ASC') {
-        $this->currentQuery->propertyOrderBy('title', $order);
-        return $this;
-    }
-
     public function count() {
         $result = $this->currentQuery->count()->execute();
         return $result;
@@ -86,13 +81,17 @@ class Base {
         return $this;
     }
 
-    public function recent() {
-        $this->currentQuery->propertyOrderBy('created', 'DESC');
-        return $this;
-    }
-
-    public function sticky() {
-        $this->currentQuery->propertyOrderBy('sticky', 'DESC');
+    public function sort($type = 'recent', $order) {
+        if($type == 'recent') {
+            $order = isset($order) ? $order : 'ASC';
+            $this->currentQuery->propertyOrderBy('created', $order);
+        } else if($type == 'alpha') {
+            $order = isset($order) ? $order : 'ASC';
+            $this->currentQuery->propertyOrderBy('title', $order);
+        } else if($type == 'sticky') {
+            $order = isset($order) ? $order : 'DESC';
+            $this->currentQuery->propertyOrderBy('sticky', $order);
+        }
         return $this;
     }
 
