@@ -13,7 +13,7 @@ class Utility {
         return $text;
     }
 
-    public static function hyphenate($string) {
+    public static function slugify($string) {
         $string = preg_replace("/[^0-9a-zA-Z ]/m", "", $string);
         $string = preg_replace("/ /", "-", $string);
         return strtolower($string);

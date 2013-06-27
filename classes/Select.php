@@ -21,16 +21,19 @@ class Select extends Base {
         $_instance->currentQuery = $query;
         return $_instance;
     }
-
-    public function recent() {
-        $this->currentQuery->orderBy('n.created', 'DESC');
-        return $this;
-    }
-
+    
     public function popular() {
         $this->currentQuery->join('node_counter', 'counter', 'n.nid = counter.nid');
         $this->currentQuery->orderBy('counter.totalcount', 'DESC');
         $this->currentQuery->groupBy('n.nid');
+        return $this;
+    }
+    
+    public function sort($type = 'recent', $order) {
+        if($type == 'recent') {
+            $order = isset($order) ? $order : 'DESC';
+            $this->currentQuery->orderBy('n.created', $order);
+        } 
         return $this;
     }
 
