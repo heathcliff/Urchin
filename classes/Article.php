@@ -22,14 +22,6 @@ class Article extends Base {
         return $_instance;
     }
 
-    public function category($category) {
-        return $this->field('field_category', $category);
-    }
-
-    public function series($series) {
-        return $this->field('field_series', $series);
-    }
-
     /**
     * returns a node data array from a curated collection
     */

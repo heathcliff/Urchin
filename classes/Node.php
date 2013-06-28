@@ -2,52 +2,6 @@
 
 class Node {
 
-    public static function getNodes($nids) {
-        if(!is_array($nids)) {
-            $nids = array($nids);
-        }
-        $nodes = array();
-        foreach ($nids as $nid) {
-            $node = node_load($nid);
-            if ($node) {
-                $data = self::getNodeData($node);
-                $nodes[] = $data;
-            }
-        }
-        return $nodes;
-    }
-
-    public static function getNids(array $nodes) {
-        $nids = array();
-        foreach ($nodes as $n) {
-            if (isset($n['nid'])) {
-                $nids[] = $n['nid'];
-            }
-        }
-        return $nids;
-    }
-
-    public static function getNodeData($node) {
-        if (class_exists('UrchinCustomizations') && method_exists('UrchinCustomizations', 'getNodeData')) {
-            return UrchinCustomizations::getNodeData($node);
-        } else {
-            $data = array(
-                'nid'               => $node->nid,
-                'type'              => str_replace('article_', '', strtolower($node->type)),
-                'created'           => $node->created,
-                'author'            => Node::getAuthor($node),
-                'author_nid'        => Node::getField($node, 'field_author', 'nid'),
-                'byline'            => Node::getField($node, 'field_byline'),
-                'title'             => $node->title,
-                'image_uri'         => Node::getThumbnail($node),
-                'youtube_id'        => Node::getField($node, 'field_youtube_id'),
-                'excerpt'           => Node::getExcerpt($node),
-                'path'              => '/' . drupal_lookup_path('alias', 'node/' . $node->nid),
-            );
-            return $data;
-        }
-    }
-
     public static function getAuthor($node) {
         if (class_exists('UrchinCustomizations') && method_exists('UrchinCustomizations', 'getAuthor')) {
             return UrchinCustomizations::getAuthor($node);
@@ -125,6 +79,52 @@ class Node {
             return $result;
         }
         return false;
+    }
+
+    public static function getNids(array $nodes) {
+        $nids = array();
+        foreach ($nodes as $n) {
+            if (isset($n['nid'])) {
+                $nids[] = $n['nid'];
+            }
+        }
+        return $nids;
+    }
+
+    public static function getNodeData($node) {
+        if (class_exists('UrchinCustomizations') && method_exists('UrchinCustomizations', 'getNodeData')) {
+            return UrchinCustomizations::getNodeData($node);
+        } else {
+            $data = array(
+                'nid'               => $node->nid,
+                'type'              => str_replace('article_', '', strtolower($node->type)),
+                'created'           => $node->created,
+                'author'            => Node::getAuthor($node),
+                'author_nid'        => Node::getField($node, 'field_author', 'nid'),
+                'byline'            => Node::getField($node, 'field_byline'),
+                'title'             => $node->title,
+                'image_uri'         => Node::getThumbnail($node),
+                'youtube_id'        => Node::getField($node, 'field_youtube_id'),
+                'excerpt'           => Node::getExcerpt($node),
+                'path'              => '/' . drupal_lookup_path('alias', 'node/' . $node->nid),
+            );
+            return $data;
+        }
+    }
+
+    public static function getNodes($nids) {
+        if(!is_array($nids)) {
+            $nids = array($nids);
+        }
+        $nodes = array();
+        foreach ($nids as $nid) {
+            $node = node_load($nid);
+            if ($node) {
+                $data = self::getNodeData($node);
+                $nodes[] = $data;
+            }
+        }
+        return $nodes;
     }
 
     public static function getThumbnail($node = null) {

@@ -2,9 +2,6 @@
 
 class Gallery
 {
-    /**
-    * returns an array of gallery images and body copy given a gallery node
-    */
     public static function get($node) {
         if ($node && $node->type == "article_gallery") {
             $gallery_data = array();
@@ -14,7 +11,7 @@ class Gallery
                     'body'      => $node->field_gallery_body[$node->language][$key]['value']
                 );
             }
-            
+
             if ($gallery_data) {
                 return $gallery_data;
             }

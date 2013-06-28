@@ -2,19 +2,6 @@
 
 class Video
 {
-    public static function renderYouTubeEmbed($id = null, $width = 640, $height = 390) {
-        if ($id) {
-            return '<iframe width="' . $width . '" height="' . $height . '" src="http://www.youtube.com/embed/' . $id  . '" frameborder="0" allowfullscreen></iframe>';
-        }
-        return false;
-    }
-
-    public static function renderEmbed($embed = null) {
-        if ($embed)  {
-            return '<div class="embed-wrap">' . html_entity_decode($embed) . '</div>';
-        }
-        return false;
-    }
 
     public static function getFeaturedVideo($field_article_video)
     {
@@ -26,7 +13,7 @@ class Video
         }
         return null;
     }
-    
+
     public static function getYouTubeImageURL($node = null) {
         if ($node) {
             if (isset($node->field_youtube_id[$node->language][0]['value'])) {
@@ -35,6 +22,20 @@ class Video
         }
         return false;
     }
-    
+
+    public static function renderEmbed($embed = null) {
+        if ($embed)  {
+            return '<div class="embed-wrap">' . html_entity_decode($embed) . '</div>';
+        }
+        return false;
+    }
+
+    public static function renderYouTubeEmbed($id = null, $width = 640, $height = 390) {
+        if ($id) {
+            return '<iframe width="' . $width . '" height="' . $height . '" src="http://www.youtube.com/embed/' . $id  . '" frameborder="0" allowfullscreen></iframe>';
+        }
+        return false;
+    }
+
 }
 

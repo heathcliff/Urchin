@@ -10,9 +10,6 @@ require_once('classes/Gallery.php');
 require_once('classes/Video.php');
 require_once('classes/Taxonomy.php');
 require_once('classes/Search.php');
-require_once('classes/HomepageCarousel.php');
-require_once('classes/Ad.php');
-require_once('classes/Magazine.php');
 require_once('classes/Utility.php');
 try {
     include(drupal_get_path('theme', variable_get('theme_default', NULL)) . '/lib/UrchinCustomizations.php');
