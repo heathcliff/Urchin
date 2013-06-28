@@ -73,7 +73,7 @@ class Base {
         return $this;
     }
 
-    public function sort($type = 'recent', $order) {
+    public function sort($type = 'recent', $order = 'DESC') {
         if($type == 'recent') {
             $order = isset($order) ? $order : 'DESC';
             $this->currentQuery->propertyOrderBy('created', $order);
