@@ -23,4 +23,8 @@ class Site {
         return !(isset($_GET['page']) && intval($_GET['page']) > 0);
     }
 
+    public static function breadcrumb() {
+        return theme('breadcrumb', array('breadcrumb' => drupal_get_breadcrumb()));
+    }
+
 }
