@@ -5,6 +5,7 @@ class Utility {
     public static function slugify($string) {
         $string = preg_replace("/[^0-9a-zA-Z ]/m", "", $string);
         $string = preg_replace("/ /", "-", $string);
+        $string = str_replace("--", "-", $string);
         return strtolower($string);
     }
 

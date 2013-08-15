@@ -66,11 +66,20 @@ class Node {
         if (isset($node) && isset($field) && !empty($node->$field)) {
             $node_field = $node->$field;
             $node_language = (isset($node->language)) ? $node->language : LANGUAGE_NONE;
-            if ($multiple && $key == 'nid') {
-                foreach ($node_field[$node_language] as $f) {
-                    $nids[] = $f['nid'];
+            if ($multiple) {
+                if ($key == 'nid') {
+                    $nids = array();
+                    foreach ($node_field[$node_language] as $f) {
+                        $nids[] = $f['nid'];
+                    }
+                    return Node::getNodes($nids);
+                } else {
+                    $results = array();
+                    foreach ($node_field[$node_language] as $f) {
+                        $results[] = $f[$key];
+                    }
+                    return $results;
                 }
-                return Node::getNodes($nids);
             } else if ($strip_tags) {
                 $result = strip_tags($node_field[$node_language][$id][$key]);
             } else {
