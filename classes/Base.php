@@ -40,6 +40,13 @@ class Base {
         return $this;
     }
 
+    public function fieldOrderBy($field, $order = 'DESC', $key = 'value') {
+        if (isset($field)) {
+            $this->currentQuery->fieldOrderBy($field, $key, $order);
+        }
+        return $this;
+    }
+
     public function execute($single = false) {
         $result = $this->currentQuery->execute();
         if (isset($result['node'])) {
