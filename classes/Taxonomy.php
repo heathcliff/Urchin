@@ -17,16 +17,20 @@ class Taxonomy
     * returns a field name associated with a particular taxonomy vocabulary id (vid)
     */
     public static function getFieldName($vid) {
-        switch ($vid) {
-            case $GLOBALS['tag']:
-                return 'field_tag';
-                break;
-            case $GLOBALS['category']:
-                return 'field_category';
-                break;
-            default:
-                return false;
-                break;
+        if (class_exists('UrchinCustomizations') && method_exists('UrchinCustomizations', 'getFieldName')) {
+            return UrchinCustomizations::getFieldName($vid);
+        } else {
+            switch ($vid) {
+                case $GLOBALS['tag']:
+                    return 'field_tag';
+                    break;
+                case $GLOBALS['category']:
+                    return 'field_category';
+                    break;
+                default:
+                    return false;
+                    break;
+            }
         }
     }
 
@@ -54,6 +58,7 @@ class Taxonomy
     public static function getTermInfo($term = null) {
         if ($term) {
             return array(
+                'tid'       => $term->tid,
                 'name'      => $term->name,
                 'image_uri' => isset($term->field_image[LANGUAGE_NONE][0]['uri']) ? $term->field_image[LANGUAGE_NONE][0]['uri'] : false,
                 'path'      => '/' . drupal_lookup_path('alias', 'taxonomy/term/' . $term->tid),

@@ -73,6 +73,15 @@ class Node {
                         $nids[] = $f['nid'];
                     }
                     return Node::getNodes($nids);
+                } else if ($key == 'tid') {
+                    $terms = array();
+                    foreach ($node_field[$node_language] as $f) {
+                        $term = Taxonomy::getTerm($f['tid']);
+                        if ($term) {
+                            $terms[] = $term;
+                        }
+                    }
+                    return $terms;
                 } else {
                     $results = array();
                     foreach ($node_field[$node_language] as $f) {
