@@ -80,14 +80,14 @@ class Base {
         return $this;
     }
 
-    public function sort($type = 'recent', $order = 'DESC') {
-        if($type == 'recent') {
+    public function sort($type = 'recent', $order) {
+        if ($type == 'recent') {
             $order = isset($order) ? $order : 'DESC';
             $this->currentQuery->propertyOrderBy('created', $order);
-        } else if($type == 'alpha') {
+        } else if ($type == 'alpha') {
             $order = isset($order) ? $order : 'ASC';
             $this->currentQuery->propertyOrderBy('title', $order);
-        } else if($type == 'sticky') {
+        } else if ($type == 'sticky') {
             $order = isset($order) ? $order : 'DESC';
             $this->currentQuery->propertyOrderBy('sticky', $order);
         }
