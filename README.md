@@ -28,7 +28,7 @@ Urchin contains a robust set of chainable functions used for querying the Drupal
 
 Start by opening the chain with one of the following:
 
-- Article::get($type) - Uses Drupal's EntityFieldQuery`` system
+- Article::get($type) - Uses Drupal's EntityFieldQuery system
 - Select::get($type) - Uses Drupal's db_select system
 
 Then set your criteria by chaining any of the following on to the opener:
