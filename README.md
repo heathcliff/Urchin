@@ -127,6 +127,7 @@ Finally, Urchin contains a file that includes globally-declared variables aimed 
 Acknowledgements + Legal
 --
 © 2013 <a href="http://www.asheavenue.com">Ashe Avenue</a>. Created by Heath Beckett and <a href="http://twitter.com/timboisvert">Tim Boisvert</a>.
+<br />
 Urchin is released under the MIT license.
 
 <a href="http://thenounproject.com/noun/totoro/#icon-No3424" target="_blank">Totoro</a> designed by <a href="http://thenounproject.com/nithindavis" target="_blank">Nithin Davis Nanthikkara</a> from The Noun Project
