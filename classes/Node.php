@@ -2,11 +2,11 @@
 
 class Node {
 
-    public static function getAuthor($node) {
-        if (class_exists('UrchinCustomizations') && method_exists('UrchinCustomizations', 'getAuthor')) {
-            return UrchinCustomizations::getAuthor($node);
-        } else {
-            if (isset($node)) {
+    public static function getAuthor($node == null) {
+        if (isset($node)) {
+            if (class_exists('UrchinCustomizations') && method_exists('UrchinCustomizations', 'getAuthor')) {
+                return UrchinCustomizations::getAuthor($node);
+            } else {
                 $nid = Node::getField($node, 'field_author', 'nid');
                 if ($nid) {
                     $author = node_load($nid);
@@ -20,16 +20,16 @@ class Node {
                         );
                     }
                 }
+                return false;
             }
-            return false;
         }
     }
 
-    public static function getCategory($node ) {
-        if (class_exists('UrchinCustomizations') && method_exists('UrchinCustomizations', 'getCategory')) {
-            return UrchinCustomizations::getCategory($node);
-        } else {
-            if (isset($node)) {
+    public static function getCategory($node == null) {
+        if (isset($node)) {
+            if (class_exists('UrchinCustomizations') && method_exists('UrchinCustomizations', 'getCategory')) {
+                return UrchinCustomizations::getCategory($node);
+            } else {
                 $tid = Node::getField($node, 'field_category', 'tid');
                 if ($tid) {
                     $term = taxonomy_term_load($tid);
@@ -43,13 +43,13 @@ class Node {
                         );
                     }
                 }
+                return false;
             }
-            return false;
         }
     }
 
     public static function getExcerpt($node = null) {
-        if ($node) {
+        if (isset($node)) {
             if (isset($node->field_excerpt[$node->language][0]['value'])) {
                 return strip_tags($node->field_excerpt[$node->language][0]['value']);
             } else if (isset($node->body[$node->language][0]['value'])) {
@@ -62,7 +62,7 @@ class Node {
         return false;
     }
 
-    public static function getField($node, $field, $key = 'value', $id = 0, $strip_tags = false, $multiple = false) {
+    public static function getField($node == null, $field == null, $key = 'value', $id = 0, $strip_tags = false, $multiple = false) {
         if (isset($node) && isset($field) && !empty($node->$field)) {
             $node_field = $node->$field;
             $node_language = (isset($node->language)) ? $node->language : LANGUAGE_NONE;
@@ -146,7 +146,7 @@ class Node {
     }
 
     public static function getThumbnail($node = null) {
-        if ($node) {
+        if (isset($node)) {
             $node_language = (isset($node->language)) ? $node->language : LANGUAGE_NONE;
             if (isset($node->field_image[$node_language][0]['uri'])) {
                 return $node->field_image[$node_language][0]['uri'];
@@ -167,7 +167,7 @@ class Node {
         if (class_exists('UrchinCustomizations') && method_exists('UrchinCustomizations', 'getRelated')) {
             return UrchinCustomizations::getRelated($node);
         } else {
-            if ($node) {
+            if (isset($node)) {
                 $tags     = Taxonomy::getTids($node->field_tag, $node->language);
                 $category = Taxonomy::getTids($node->field_category, $node->language);
 

@@ -9,7 +9,7 @@ class Utility {
         return strtolower($string);
     }
 
-    public static function trimText($text, $length = 80, $append = '…') {
+    public static function trimText($text, $length = 80, $append = '...') {
         if (strlen($text) > $length) {
             $last_space = strrpos(substr($text, 0, $length), ' ');
             $text = substr($text, 0, $last_space);

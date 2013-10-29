@@ -52,7 +52,7 @@ class Select extends Base {
     }
 
     public function groupBy($vocabulary = null) {
-        if ($vocabulary) {
+        if (isset($vocabulary)) {
             $field = Taxonomy::getFieldName($vocabulary);
             if ($field) {
                 $this->currentQuery->groupBy($field.'.'.$field.'_tid');

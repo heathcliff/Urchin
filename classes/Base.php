@@ -4,11 +4,13 @@ class Base {
 
     public $currentQuery;
 
-    public function count() {
-        $result = $this->currentQuery->count()->execute();
-        return $result;
-    }
-
+    // 
+    // Chainable calls
+    // =================
+    // Calls that modify the query and return it. These are intended 
+    // to be used in the middle of the chain.
+    //
+    
     public function date($order = 'ASC') {
         $this->currentQuery->fieldOrderBy('field_date', 'value', $order);
         return $this;
@@ -40,32 +42,19 @@ class Base {
         return $this;
     }
 
-    public function fieldOrderBy($field, $order = 'DESC', $key = 'value') {
-        if (isset($field)) {
-            $this->currentQuery->fieldOrderBy($field, $key, $order);
-        }
-        return $this;
-    }
-
-    public function execute($single = false) {
-        $result = $this->currentQuery->execute();
-        if (isset($result['node'])) {
-            if ($single) {
-                return reset(Node::getNodes(array_keys($result['node'])));
-            } else {
-                return Node::getNodes(array_keys($result['node']));
-            }
-        } else {
-            return array();
-        }
-    }
-
     public function field($field_name, $field_value, $key = 'value') {
         if (isset($field_value)) {
             if(!is_array($field_value)) {
                 $field_value = array($field_value);
             }
             $this->currentQuery->fieldCondition($field_name, $key, $field_value, 'IN');
+        }
+        return $this;
+    }
+
+    public function fieldOrderBy($field, $order = 'DESC', $key = 'value') {
+        if (isset($field)) {
+            $this->currentQuery->fieldOrderBy($field, $key, $order);
         }
         return $this;
     }
@@ -104,6 +93,32 @@ class Base {
             }
         }
         return $this;
+    }
+    
+    
+    // 
+    // Terminating calls
+    // =================
+    // Calls that execute and return a result. These are intended 
+    // to be used at the end of the chain.
+    //
+    
+    public function count() {
+        $result = $this->currentQuery->count()->execute();
+        return $result;
+    }
+
+    public function execute($single = false) {
+        $result = $this->currentQuery->execute();
+        if (isset($result['node'])) {
+            if ($single) {
+                return reset(Node::getNodes(array_keys($result['node'])));
+            } else {
+                return Node::getNodes(array_keys($result['node']));
+            }
+        } else {
+            return array();
+        }
     }
 
 }

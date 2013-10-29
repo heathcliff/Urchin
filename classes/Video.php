@@ -15,7 +15,7 @@ class Video
     }
 
     public static function getYouTubeImageURL($node = null) {
-        if ($node) {
+        if (isset($node)) {
             if (isset($node->field_youtube_id[$node->language][0]['value'])) {
                 return 'http://img.youtube.com/vi/' . $node->field_youtube_id[$node->language][0]['value'] . '/0.jpg';
             }
@@ -24,14 +24,14 @@ class Video
     }
 
     public static function renderEmbed($embed = null) {
-        if ($embed)  {
+        if (isset($embed))  {
             return '<div class="embed-wrap">' . html_entity_decode($embed) . '</div>';
         }
         return false;
     }
 
     public static function renderYouTubeEmbed($id = null, $width = 640, $height = 390) {
-        if ($id) {
+        if (isset($id)) {
             return '<iframe width="' . $width . '" height="' . $height . '" src="http://www.youtube.com/embed/' . $id  . '" frameborder="0" allowfullscreen></iframe>';
         }
         return false;

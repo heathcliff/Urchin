@@ -3,7 +3,7 @@
 class Taxonomy
 {
 
-    public static function getChildren($tid) {
+    public static function getChildren($tid = null) {
         if (isset($tid)) {
             $children = array_keys(taxonomy_get_children($tid));
             if ($children) {
@@ -13,25 +13,25 @@ class Taxonomy
         return false;
     }
 
-    /**
-    * returns a field name associated with a particular taxonomy vocabulary id (vid)
-    */
-    public static function getFieldName($vid) {
-        if (class_exists('UrchinCustomizations') && method_exists('UrchinCustomizations', 'getFieldName')) {
-            return UrchinCustomizations::getFieldName($vid);
-        } else {
-            switch ($vid) {
-                case $GLOBALS['tag']:
-                    return 'field_tag';
-                    break;
-                case $GLOBALS['category']:
-                    return 'field_category';
-                    break;
-                default:
-                    return false;
-                    break;
+    public static function getFieldName($vid = null) {
+        if(isset($vid)) {
+            if (class_exists('UrchinCustomizations') && method_exists('UrchinCustomizations', 'getFieldName')) {
+                return UrchinCustomizations::getFieldName($vid);
+            } else {
+                switch ($vid) {
+                    case $GLOBALS['tag']:
+                        return 'field_tag';
+                        break;
+                    case $GLOBALS['category']:
+                        return 'field_category';
+                        break;
+                    default:
+                        return false;
+                        break;
+                }
             }
         }
+        return false;
     }
 
     public static function getSeriesInfo($node = null) {
@@ -46,7 +46,7 @@ class Taxonomy
         return false;
     }
 
-    public static function getTerm($tid) {
+    public static function getTerm($tid = null) {
         if (isset($tid)) {
             $term = taxonomy_term_load($tid);
             if ($term) {
