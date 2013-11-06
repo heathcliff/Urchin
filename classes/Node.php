@@ -92,7 +92,11 @@ class Node {
             } else if ($strip_tags) {
                 $result = strip_tags($node_field[$node_language][$id][$key]);
             } else {
-                $result = $node_field[$node_language][$id][$key];
+                if ($key == 'bool') {
+                    $result = ($node_field[$node_language][$id]['value'] == 1);
+                } else {
+                    $result = $node_field[$node_language][$id][$key];
+                }
             }
             return $result;
         }
