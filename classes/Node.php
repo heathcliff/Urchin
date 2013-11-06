@@ -2,7 +2,7 @@
 
 class Node {
 
-    public static function getAuthor($node == null) {
+    public static function getAuthor($node = null) {
         if (isset($node)) {
             if (class_exists('UrchinCustomizations') && method_exists('UrchinCustomizations', 'getAuthor')) {
                 return UrchinCustomizations::getAuthor($node);
@@ -25,7 +25,7 @@ class Node {
         }
     }
 
-    public static function getCategory($node == null) {
+    public static function getCategory($node = null) {
         if (isset($node)) {
             if (class_exists('UrchinCustomizations') && method_exists('UrchinCustomizations', 'getCategory')) {
                 return UrchinCustomizations::getCategory($node);
@@ -62,7 +62,7 @@ class Node {
         return false;
     }
 
-    public static function getField($node == null, $field == null, $key = 'value', $id = 0, $strip_tags = false, $multiple = false) {
+    public static function getField($node = null, $field = null, $key = 'value', $id = 0, $strip_tags = false, $multiple = false) {
         if (isset($node) && isset($field) && !empty($node->$field)) {
             $node_field = $node->$field;
             $node_language = (isset($node->language)) ? $node->language : LANGUAGE_NONE;
