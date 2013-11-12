@@ -49,11 +49,11 @@ class Node {
     }
 
     public static function getExcerpt($node = null) {
-        if (isset($node)) {
-            if (isset($node->field_excerpt[$node->language][0]['value'])) {
-                return strip_tags($node->field_excerpt[$node->language][0]['value']);
-            } else if (isset($node->body[$node->language][0]['value'])) {
-                $body_array = explode("\n", $node->body[$node->language][0]['value']);
+        if ($node) {
+            if (self::getField($node, 'field_excerpt')) {
+                return strip_tags(self::getField($node, 'field_excerpt'));
+            } else if (self::getField($node, 'field_body')) {
+                $body_array = explode("\n", self::getField($node, 'field_body'));
                 if (isset($body_array[0]) && strlen($body_array[0]) > 0) {
                     return Utility::trimText(strip_tags($body_array[0]), 275);
                 }
