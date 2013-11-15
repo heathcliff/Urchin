@@ -103,6 +103,55 @@ class Node {
         return false;
     }
 
+    /**
+     *  Similar to getField(), this function is reserved for grouped fields
+     *  as it returns field values keyed off their delta values
+     *
+     *  This function currently only supports field keys of 'value' and 'uri'
+     */
+    public static function getDeltaFields($node = null, $field = null, $key = 'value') {
+        if (isset($node->nid) && $field) {
+            if ($key == 'uri') {
+                $sql = "SELECT
+                            delta,
+                            file_managed.uri
+                        FROM
+                            {field_data_{$field}} field
+                        INNER JOIN
+                            {file_managed} file_managed ON file_managed.fid = field.{$field}_fid
+                        WHERE
+                            entity_id   = {$node->nid} AND
+                            entity_type = 'node'
+                        ";
+                $result = db_query($sql);
+                $result = $result->fetchAllAssoc('delta');
+                $data   = array();
+                if ($result) {
+                    foreach ($result as $delta => $object) {
+                        $data[$delta] = $object->uri;
+                    }
+                    return $data;
+                }
+            } else if ($key == 'value') {
+                $sql = "SELECT
+                            delta,
+                            {$field}_value
+                        FROM
+                            {field_data_{$field}} field
+                        WHERE
+                            entity_id   = {$node->nid} AND
+                            entity_type = 'node'
+                        ";
+                $result = db_query($sql);
+                $result = $result->fetchAllKeyed(0);
+                if ($result) {
+                    return $result;
+                }
+            }
+        }
+        return false;
+    }
+
     public static function getNids(array $nodes) {
         $nids = array();
         foreach ($nodes as $n) {
