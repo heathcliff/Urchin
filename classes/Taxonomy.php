@@ -36,8 +36,9 @@ class Taxonomy
 
     public static function getSeriesInfo($node = null) {
         if ($node) {
-            if (isset($node->field_series[$node->language][0]['tid'])) {
-                $term = taxonomy_term_load($node->field_series[$node->language][0]['tid']);
+            $node_language = LANGUAGE_NONE;
+            if (isset($node->field_series[$node_language][0]['tid'])) {
+                $term = taxonomy_term_load($node->field_series[$node_language][0]['tid']);
                 if ($term) {
                     return self::getTermInfo($term);
                 }

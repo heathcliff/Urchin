@@ -73,7 +73,7 @@ class Node {
     public static function getField($node = null, $field = null, $key = 'value', $id = 0, $strip_tags = false, $multiple = false) {
         if (isset($node) && isset($field) && !empty($node->$field)) {
             $node_field = $node->$field;
-            $node_language = (isset($node->language)) ? $node->language : LANGUAGE_NONE;
+            $node_language = LANGUAGE_NONE;
             if ($multiple) {
                 if ($key == 'nid') {
                     $nids = array();
@@ -208,7 +208,7 @@ class Node {
 
     public static function getThumbnail($node = null) {
         if (isset($node)) {
-            $node_language = (isset($node->language)) ? $node->language : LANGUAGE_NONE;
+            $node_language = LANGUAGE_NONE;
             if (isset($node->field_image[$node_language][0]['uri'])) {
                 return $node->field_image[$node_language][0]['uri'];
             } else if (isset($node->field_gallery_image[$node_language][0]['uri'])) {
@@ -229,8 +229,9 @@ class Node {
             return UrchinCustomizations::getRelated($node);
         } else {
             if (isset($node)) {
-                $tags     = Taxonomy::getTids($node->field_tag, $node->language);
-                $category = Taxonomy::getTids($node->field_category, $node->language);
+                $node_language = LANGUAGE_NONE;
+                $tags          = Taxonomy::getTids($node->field_tag, $node_language);
+                $category      = Taxonomy::getTids($node->field_category, $node_language);
 
                 $query = db_select('node', 'n');
 
