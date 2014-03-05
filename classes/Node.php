@@ -102,8 +102,10 @@ class Node {
             } else {
                 if ($key == 'bool') {
                     $result = ($node_field[$node_language][$id]['value'] == 1);
-                } else {
+                } else if (!empty($node_field[$node_language][$id][$key])) {
                     $result = $node_field[$node_language][$id][$key];
+                } else {
+                    $result = false;
                 }
             }
             return $result;
