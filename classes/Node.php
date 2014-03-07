@@ -16,7 +16,7 @@ class Node {
                             'name'      => $author->title,
                             'excerpt'   => Node::getField($author, 'field_excerpt'),
                             'image_uri' => Node::getThumbnail($author),
-                            'path'      => '/' . drupal_lookup_path('alias', 'node/' . $author->nid),
+                            'path'      => url('node/' . $author->nid),
                         );
                     }
                 }
@@ -39,7 +39,7 @@ class Node {
                             'name'      => $term->name,
                             'excerpt'   => Node::getField($term, 'field_excerpt'),
                             'image_uri' => Node::getThumbnail($term),
-                            'path'      => '/' . drupal_lookup_path('alias', 'taxonomy/term/' . $tid),
+                            'path'      => url('taxonomy/term/' . $tid),
                         );
                     }
                 }
@@ -185,7 +185,7 @@ class Node {
                 'image_uri'         => Node::getThumbnail($node),
                 'youtube_id'        => Node::getField($node, 'field_youtube_id'),
                 'excerpt'           => Node::getExcerpt($node),
-                'path'              => '/' . drupal_lookup_path('alias', 'node/' . $node->nid),
+                'path'              => url('node/' . $node->nid),
             );
             return $data;
         }

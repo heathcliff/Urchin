@@ -62,7 +62,7 @@ class Taxonomy
                 'tid'       => $term->tid,
                 'name'      => $term->name,
                 'image_uri' => isset($term->field_image[LANGUAGE_NONE][0]['uri']) ? $term->field_image[LANGUAGE_NONE][0]['uri'] : false,
-                'path'      => '/' . drupal_lookup_path('alias', 'taxonomy/term/' . $term->tid),
+                'path'      => url('taxonomy/term/' . $term->tid),
 
             );
         }
