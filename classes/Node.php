@@ -281,4 +281,9 @@ class Node {
         }
     }
 
+    public static function language() {
+        global $language;
+        return $language->language;
+    }
+
 }
