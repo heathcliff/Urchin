@@ -16,8 +16,9 @@ class Video
 
     public static function getYouTubeImageURL($node = null) {
         if (isset($node)) {
-            if (isset($node->field_youtube_id[$node->language][0]['value'])) {
-                return 'http://img.youtube.com/vi/' . $node->field_youtube_id[$node->language][0]['value'] . '/0.jpg';
+            $node_language = LANGUAGE_NONE;
+            if (isset($node->field_youtube_id[$node_language][0]['value'])) {
+                return 'http://img.youtube.com/vi/' . $node->field_youtube_id[$node_language][0]['value'] . '/0.jpg';
             }
         }
         return false;

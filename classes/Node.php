@@ -16,7 +16,7 @@ class Node {
                             'name'      => $author->title,
                             'excerpt'   => Node::getField($author, 'field_excerpt'),
                             'image_uri' => Node::getThumbnail($author),
-                            'path'      => '/' . drupal_lookup_path('alias', 'node/' . $author->nid),
+                            'path'      => url('node/' . $author->nid),
                         );
                     }
                 }
@@ -39,7 +39,7 @@ class Node {
                             'name'      => $term->name,
                             'excerpt'   => Node::getField($term, 'field_excerpt'),
                             'image_uri' => Node::getThumbnail($term),
-                            'path'      => '/' . drupal_lookup_path('alias', 'taxonomy/term/' . $tid),
+                            'path'      => url('taxonomy/term/' . $tid),
                         );
                     }
                 }
@@ -73,7 +73,7 @@ class Node {
     public static function getField($node = null, $field = null, $key = 'value', $id = 0, $strip_tags = false, $multiple = false) {
         if (isset($node) && isset($field) && !empty($node->$field)) {
             $node_field = $node->$field;
-            $node_language = (isset($node->language)) ? $node->language : LANGUAGE_NONE;
+            $node_language = LANGUAGE_NONE;
             if ($multiple) {
                 if ($key == 'nid') {
                     $nids = array();
@@ -187,7 +187,7 @@ class Node {
                 'image_uri'         => Node::getThumbnail($node),
                 'youtube_id'        => Node::getField($node, 'field_youtube_id'),
                 'excerpt'           => Node::getExcerpt($node),
-                'path'              => '/' . drupal_lookup_path('alias', 'node/' . $node->nid),
+                'path'              => url('node/' . $node->nid),
             );
             return $data;
         }
@@ -210,7 +210,7 @@ class Node {
 
     public static function getThumbnail($node = null) {
         if (isset($node)) {
-            $node_language = (isset($node->language)) ? $node->language : LANGUAGE_NONE;
+            $node_language = LANGUAGE_NONE;
             if (isset($node->field_image[$node_language][0]['uri'])) {
                 return $node->field_image[$node_language][0]['uri'];
             } else if (isset($node->field_gallery_image[$node_language][0]['uri'])) {
@@ -231,8 +231,9 @@ class Node {
             return UrchinCustomizations::getRelated($node);
         } else {
             if (isset($node)) {
-                $tags     = Taxonomy::getTids($node->field_tag, $node->language);
-                $category = Taxonomy::getTids($node->field_category, $node->language);
+                $node_language = LANGUAGE_NONE;
+                $tags          = Taxonomy::getTids($node->field_tag, $node_language);
+                $category      = Taxonomy::getTids($node->field_category, $node_language);
 
                 $query = db_select('node', 'n');
 
@@ -280,6 +281,11 @@ class Node {
             }
             return false;
         }
+    }
+
+    public static function language() {
+        global $language;
+        return $language->prefix;
     }
 
 }

@@ -36,8 +36,9 @@ class Taxonomy
 
     public static function getSeriesInfo($node = null) {
         if ($node) {
-            if (isset($node->field_series[$node->language][0]['tid'])) {
-                $term = taxonomy_term_load($node->field_series[$node->language][0]['tid']);
+            $node_language = LANGUAGE_NONE;
+            if (isset($node->field_series[$node_language][0]['tid'])) {
+                $term = taxonomy_term_load($node->field_series[$node_language][0]['tid']);
                 if ($term) {
                     return self::getTermInfo($term);
                 }
@@ -61,7 +62,7 @@ class Taxonomy
                 'tid'       => $term->tid,
                 'name'      => $term->name,
                 'image_uri' => isset($term->field_image[LANGUAGE_NONE][0]['uri']) ? $term->field_image[LANGUAGE_NONE][0]['uri'] : false,
-                'path'      => '/' . drupal_lookup_path('alias', 'taxonomy/term/' . $term->tid),
+                'path'      => url('taxonomy/term/' . $term->tid),
 
             );
         }
