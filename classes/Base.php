@@ -4,13 +4,13 @@ class Base {
 
     public $currentQuery;
 
-    // 
+    //
     // Chainable calls
     // =================
-    // Calls that modify the query and return it. These are intended 
+    // Calls that modify the query and return it. These are intended
     // to be used in the middle of the chain.
     //
-    
+
     public function date($order = 'ASC') {
         $this->currentQuery->fieldOrderBy('field_date', 'value', $order);
         return $this;
@@ -94,21 +94,45 @@ class Base {
         }
         return $this;
     }
-    
-    
-    // 
+
+    public function language($language_code = null) {
+        if ($language_code) {
+            $this->currentQuery->propertyCondition('language', $language_code);
+        }
+        return $this;
+    }
+
+    //
     // Terminating calls
     // =================
-    // Calls that execute and return a result. These are intended 
+    // Calls that execute and return a result. These are intended
     // to be used at the end of the chain.
     //
-    
+
     public function count() {
         $result = $this->currentQuery->count()->execute();
         return $result;
     }
 
     public function execute($single = false) {
+
+        // check to see if a language has been specified
+        $language_specified = false;
+        if (!empty($this->currentQuery->propertyConditions)) {
+            foreach ($this->currentQuery->propertyConditions as $condition) {
+                if ($condition['column'] == 'language') {
+                    $language_specified = true;
+                }
+            }
+        }
+
+        // if a language has not been specified, execute the query in the current language
+        if (!$language_specified) {
+            global $language ;
+            $language_code = $language->language;
+            $this->currentQuery->propertyCondition('language', $language_code);
+        }
+
         $result = $this->currentQuery->execute();
         if (isset($result['node'])) {
             if ($single) {

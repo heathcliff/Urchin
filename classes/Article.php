@@ -3,13 +3,10 @@
 class Article extends Base {
 
     public static function get($type = null) {
-        global $language ;
-        $language_code = $language->language;
         $_instance = new self;
         $query = new EntityFieldQuery();
         $query->entityCondition('entity_type', 'node')
-              ->propertyCondition('status', '1')
-              ->propertyCondition('language', $language_code);
+              ->propertyCondition('status', '1');
 
         //set the type
         if (isset($type)) {
