@@ -128,9 +128,13 @@ class Base {
 
         // if a language has not been specified, execute the query in the current language
         if (!$language_specified) {
-            global $language ;
-            $language_code = $language->language;
-            $this->currentQuery->propertyCondition('language', $language_code);
+            if (!empty($GLOBALS['default_language'])) {
+                $this->currentQuery->propertyCondition('language', $GLOBALS['default_language']);
+            } else {
+                global $language ;
+                $language_code = $language->language;
+                $this->currentQuery->propertyCondition('language', $language_code);
+            }
         }
 
         $result = $this->currentQuery->execute();
