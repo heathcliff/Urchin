@@ -157,6 +157,21 @@ class Node {
                 if ($result) {
                     return $result;
                 }
+            } else if ($key == 'nid') {
+                $sql = "SELECT
+                            delta,
+                            {$field}_nid
+                        FROM
+                            {field_data_{$field}} field
+                        WHERE
+                            entity_id   = {$node->nid} AND
+                            entity_type = 'node'
+                        ";
+                $result = db_query($sql);
+                $result = $result->fetchAllKeyed(0);
+                if ($result) {
+                    return $result;
+                }
             }
         }
         return false;
