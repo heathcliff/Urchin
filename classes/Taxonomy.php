@@ -13,6 +13,16 @@ class Taxonomy
         return false;
     }
 
+    public static function getParents($tid = null) {
+        if (isset($tid)) {
+            $parents = array_keys(taxonomy_get_parents($tid));
+            if ($parents) {
+                return $parents;
+            }
+        }
+        return false;
+    }
+
     public static function getFieldName($vid = null) {
         if(isset($vid)) {
             if (class_exists('UrchinCustomizations') && method_exists('UrchinCustomizations', 'getFieldName')) {
