@@ -21,19 +21,36 @@ class Select extends Base {
         $_instance->currentQuery = $query;
         return $_instance;
     }
-    
+
+    public function exclude($exclude) {
+        if (isset($exclude)) {
+            if(!is_array($exclude)) {
+                $exclude = array($exclude);
+            }
+            $this->currentQuery->condition('n.nid', $exclude, 'NOT IN');
+        }
+        return $this;
+    }
+
+    public function inStock() {
+        $this->currentQuery->join('uc_products', 'uc_products', 'uc_products.nid = n.nid');
+        $this->currentQuery->join('uc_product_stock', 'uc_product_stock', 'uc_product_stock.sku = uc_products.model');
+        $this->currentQuery->condition('uc_product_stock.stock', 0, '>');
+        return $this;
+    }
+
     public function popular() {
         $this->currentQuery->join('node_counter', 'counter', 'n.nid = counter.nid');
         $this->currentQuery->orderBy('counter.totalcount', 'DESC');
         $this->currentQuery->groupBy('n.nid');
         return $this;
     }
-    
+
     public function sort($type = 'recent', $order = 'DESC') {
         if($type == 'recent') {
             $order = isset($order) ? $order : 'DESC';
             $this->currentQuery->orderBy('n.created', $order);
-        } 
+        }
         return $this;
     }
 
@@ -47,6 +64,17 @@ class Select extends Base {
                 $this->currentQuery->join('field_data_'.$field, $field, 'n.nid = '.$field.'.entity_id');
                 $this->currentQuery->condition($field . '.' . $field . '_tid', $tid, 'IN');
             }
+        }
+        return $this;
+    }
+
+    public function field($field_name, $field_value, $key = "value") {
+        if (isset($field_value)) {
+            if (!is_array($field_value)) {
+                $field_value = array($field_value);
+            }
+            $this->currentQuery->leftJoin("field_data_{$field_name}", "field_data_{$field_name}", "field_data_{$field_name}.entity_id = n.nid");
+            $this->currentQuery->condition("field_data_{$field_name}.{$field_name}_{$key}", $field_value, 'IN');
         }
         return $this;
     }
