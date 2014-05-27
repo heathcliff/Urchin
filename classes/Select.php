@@ -36,6 +36,7 @@ class Select extends Base {
         $this->currentQuery->join('uc_products', 'uc_products', 'uc_products.nid = n.nid');
         $this->currentQuery->join('uc_product_stock', 'uc_product_stock', 'uc_product_stock.sku = uc_products.model');
         $this->currentQuery->condition('uc_product_stock.stock', 0, '>');
+        $this->currentQuery->condition('uc_product_stock.active', 1, '=');
         return $this;
     }
 
