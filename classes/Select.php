@@ -90,7 +90,7 @@ class Select extends Base {
         return $this;
     }
 
-    public function execute() {
+    public function execute($single = false) {
         $results = $this->currentQuery->execute()->fetchAll(PDO::FETCH_ASSOC);
         if (isset($results[0]['nid'])) {
             $nids = array();
