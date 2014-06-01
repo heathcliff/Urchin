@@ -47,9 +47,10 @@ class Utility {
     }
 
     public static function cleanURL($url) {
-        if (strpos($url, "http://") != 0) {
-            return "http://" . $url;
-        }
+        if (strpos($url, "http://") !== 0) {
+            $url =  "http://" . $url;
+        } 
+        return $url;
     }
     
 }
