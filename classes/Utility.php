@@ -46,4 +46,10 @@ class Utility {
         return ' posted ' . $retval . ' ago';
     }
 
+    public static function cleanURL($url) {
+        if (strpos($url, "http://") != 0) {
+            return "http://" . $url;
+        }
+    }
+    
 }
