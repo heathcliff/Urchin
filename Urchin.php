@@ -11,6 +11,7 @@ require_once('classes/Video.php');
 require_once('classes/Taxonomy.php');
 require_once('classes/Search.php');
 require_once('classes/Utility.php');
+require_once('classes/MailchimpWrapper.php');
 try {
     include(drupal_get_path('theme', variable_get('theme_default', NULL)) . '/lib/UrchinCustomizations.php');
 } catch (Exception $e) {}
