@@ -18,7 +18,12 @@ class MailchimpWrapper {
             $update_existing    = true;
             $replace_interests  = false;
             $send_welcome       = true;
-            $subscriber         = $mailchimp_lists->subscribe($list_id, $email, $merge_vars, $email_type, $double_optin, $update_existing, $replace_interests, $send_welcome);
+            try {
+                $subscriber     = $mailchimp_lists->subscribe($list_id, $email, $merge_vars, $email_type, $double_optin, $update_existing, $replace_interests, $send_welcome);
+            } catch (Exception $e) {
+                return false;
+            }
+
             if (!empty($subscriber['email'])) {
                 return true;
             }
