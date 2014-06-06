@@ -33,6 +33,9 @@ class Select extends Base {
     }
 
     public function inStock() {
+
+
+
         $this->currentQuery->join('uc_products', 'uc_products', 'uc_products.nid = n.nid');
         $this->currentQuery->join('uc_product_stock', 'uc_product_stock', 'uc_product_stock.sku = uc_products.model');
         $this->currentQuery->condition('uc_product_stock.stock', 0, '>');
@@ -66,6 +69,15 @@ class Select extends Base {
                 $this->currentQuery->condition($field . '.' . $field . '_tid', $tid, 'IN');
             }
         }
+        return $this;
+    }
+
+    public function notField($field_name, $key = "value") {
+        $this->currentQuery->leftJoin("field_data_{$field_name}", "field_data_{$field_name}", "field_data_{$field_name}.entity_id = n.nid");
+        $or = db_or();
+        $or->condition("field_data_{$field_name}.{$field_name}_{$key}", '0', '=');
+        $or->condition("field_data_{$field_name}.{$field_name}_{$key}", NULL, 'IS NULL');
+        $this->currentQuery->condition($or);
         return $this;
     }
 
