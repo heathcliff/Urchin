@@ -6,7 +6,7 @@
 
 class MailchimpWrapper {
 
-    public static function subscribe($email = false, $list_id = false) {
+    public static function subscribe($email = false, $list_id = false, $send_welcome = false) {
         if ($email) {
             $mailchimp          = new MailChimp($GLOBALS['mailchimp']['api_key']);
             $mailchimp_lists    = new Mailchimp_Lists($mailchimp);
@@ -17,7 +17,7 @@ class MailchimpWrapper {
             $double_optin       = false;
             $update_existing    = true;
             $replace_interests  = false;
-            $send_welcome       = true;
+            $send_welcome       = $send_welcome;
             try {
                 $subscriber     = $mailchimp_lists->subscribe($list_id, $email, $merge_vars, $email_type, $double_optin, $update_existing, $replace_interests, $send_welcome);
             } catch (Exception $e) {
