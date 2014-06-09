@@ -10,6 +10,7 @@ require_once('classes/Gallery.php');
 require_once('classes/Video.php');
 require_once('classes/Taxonomy.php');
 require_once('classes/Search.php');
+require_once('classes/User.php');
 require_once('classes/Utility.php');
 require_once('classes/MailchimpWrapper.php');
 try {

@@ -52,4 +52,9 @@ class Utility {
         } 
         return $url;
     }
+    
+    public static function redirectTo404() {
+        unset($_GET['destination']);
+        drupal_goto('404-page-not-found');
+    }
 }
