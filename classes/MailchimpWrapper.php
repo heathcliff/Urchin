@@ -7,7 +7,7 @@
 class MailchimpWrapper {
 
     public static function subscribe($email = false, $list_id = false, $send_welcome = false, $merge_vars = null) {
-        if ($email) {
+        if ($email && class_exists('MailChimp')) {
             $mailchimp          = new MailChimp($GLOBALS['mailchimp']['api_key']);
             $mailchimp_lists    = new Mailchimp_Lists($mailchimp);
             $list_id            = ($list_id) ? $list_id : $GLOBALS['mailchimp']['list_id'];
@@ -30,24 +30,29 @@ class MailchimpWrapper {
     }
 
     public static function getStaticSegments($list_id = false) {
-        $mailchimp          = new MailChimp($GLOBALS['mailchimp']['api_key']);
-        $mailchimp_lists    = new Mailchimp_Lists($mailchimp);
-        $list_id            = ($list_id) ? $list_id : $GLOBALS['mailchimp']['list_id'];
-        return $mailchimp_lists->staticSegments($list_id);
+        if (class_exists('MailChimp')) {
+            $mailchimp          = new MailChimp($GLOBALS['mailchimp']['api_key']);
+            $mailchimp_lists    = new Mailchimp_Lists($mailchimp);
+            $list_id            = ($list_id) ? $list_id : $GLOBALS['mailchimp']['list_id'];
+            return $mailchimp_lists->staticSegments($list_id);
+        }
+        return false;
     }
 
     public static function addToSegment($email = false, $seg_id, $list_id = false) {
-        $mailchimp          = new MailChimp($GLOBALS['mailchimp']['api_key']);
-        $mailchimp_lists    = new Mailchimp_Lists($mailchimp);
-        $list_id            = ($list_id) ? $list_id : $GLOBALS['mailchimp']['list_id'];
-        $batch              = array(array('email' => $email));
-        try {
-            $response = $mailchimp_lists->staticSegmentMembersAdd($list_id, $seg_id, $batch);
-        } catch (Exception $e) {
-            return false;
-        }
-        if (!empty($response['success_count']) && $response['success_count']) {
-            return $response;
+        if (class_exists('MailChimp')) {
+            $mailchimp          = new MailChimp($GLOBALS['mailchimp']['api_key']);
+            $mailchimp_lists    = new Mailchimp_Lists($mailchimp);
+            $list_id            = ($list_id) ? $list_id : $GLOBALS['mailchimp']['list_id'];
+            $batch              = array(array('email' => $email));
+            try {
+                $response = $mailchimp_lists->staticSegmentMembersAdd($list_id, $seg_id, $batch);
+            } catch (Exception $e) {
+                return false;
+            }
+            if (!empty($response['success_count']) && $response['success_count']) {
+                return $response;
+            }
         }
         return false;
     }
