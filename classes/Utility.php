@@ -9,6 +9,15 @@ class Utility {
         return strtolower($string);
     }
 
+    public static function firstParagraph($text, $append = false) {
+        if ($append) {
+            $text = rtrim(substr($text, 0, strpos($text, "</p>")), '.') . $append . '</p>';
+        } else {
+            $text = substr($text, 0, strpos($text, "</p>") + 4);
+        }
+        return $text;
+    }
+
     public static function trimText($text, $length = 80, $append = '...') {
         if (strlen($text) > $length) {
             $last_space = strrpos(substr($text, 0, $length), ' ');
@@ -49,10 +58,10 @@ class Utility {
     public static function cleanURL($url) {
         if (strpos($url, "http://") !== 0 && strpos($url, "https://") !== 0) {
             $url =  "http://" . $url;
-        } 
+        }
         return $url;
     }
-    
+
     public static function redirectTo404() {
         unset($_GET['destination']);
         drupal_goto('404-page-not-found');
