@@ -113,6 +113,21 @@ class Node {
         return false;
     }
 
+    public static function getFieldTids($node, $field) {
+        if (isset($node) && isset($field) && !empty($node->$field)) {
+            $node_field = $node->$field;
+            $node_language = (isset($node->language) && $node->language != '') ? $node->language : LANGUAGE_NONE;
+            $tids = array();
+            foreach ($node_field[$node_language] as $field) {
+                if ($field['tid']) {
+                    $tids[] = $field['tid'];
+                }
+            }
+            return $tids;
+        }
+        return false;
+    }
+
     /**
      *  Similar to getField(), this function is reserved for grouped fields
      *  as it returns field values keyed off their delta values
