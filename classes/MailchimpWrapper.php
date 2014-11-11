@@ -29,6 +29,24 @@ class MailchimpWrapper {
         return false;
     }
 
+    public static function unsubscribe($email, $list_id, $delete_member = false, $send_goodbye = false, $send_notify = false) {
+        if ($email && class_exists('MailChimp')) {
+            $mailchimp          = new MailChimp($GLOBALS['mailchimp']['api_key']);
+            $mailchimp_lists    = new Mailchimp_Lists($mailchimp);
+            $list_id            = ($list_id) ? $list_id : $GLOBALS['mailchimp']['list_id'];
+            $email              = array('email' => $email);
+            try {
+                $response           = $mailchimp_lists->unsubscribe($list_id, $email, $delete_member, $send_goodbye, $send_notify);
+            } catch (Exception $e) {
+                return false;
+            }
+            if (!empty($response['complete'])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static function getStaticSegments($list_id = false) {
         if (class_exists('MailChimp')) {
             $mailchimp          = new MailChimp($GLOBALS['mailchimp']['api_key']);
