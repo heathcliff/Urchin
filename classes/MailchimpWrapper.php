@@ -40,13 +40,25 @@ class MailchimpWrapper {
     }
 
     public static function addToSegment($email = false, $seg_id, $list_id = false) {
+        return self::modifySegment($email, $seg_id, $list_id, 'add');
+    }
+
+    public static function removeFromSegment($email = false, $seg_id, $list_id = false) {
+        return self::modifySegment($email, $seg_id, $list_id, 'remove');
+    }
+
+    private static function modifySegment($email = false, $seg_id, $list_id = false, $action = 'add') {
         if (class_exists('MailChimp')) {
             $mailchimp          = new MailChimp($GLOBALS['mailchimp']['api_key']);
             $mailchimp_lists    = new Mailchimp_Lists($mailchimp);
             $list_id            = ($list_id) ? $list_id : $GLOBALS['mailchimp']['list_id'];
             $batch              = array(array('email' => $email));
             try {
-                $response = $mailchimp_lists->staticSegmentMembersAdd($list_id, $seg_id, $batch);
+                if ($action == 'add') {
+                    $response = $mailchimp_lists->staticSegmentMembersAdd($list_id, $seg_id, $batch);
+                } else {
+                    $response = $mailchimp_lists->staticSegmentMembersDel($list_id, $seg_id, $batch);
+                }
             } catch (Exception $e) {
                 return false;
             }
