@@ -10,11 +10,21 @@ class Utility {
     }
 
     public static function firstParagraph($text, $append = false) {
-        if ($append) {
-            $text = rtrim(substr($text, 0, strpos($text, "</p>")), '.') . $append . '</p>';
+        // strip empty <p> tags
+        $text = preg_replace("#<p>(\s|&nbsp;|</?\s?br\s?/?>)*</?p>#", "", $text);
+
+        // get the first <p> tag
+        if (preg_match('%(<p[^>]*>.*?</p>)%i', $text, $regs)) {
+            $text = $regs[1];
+            if ($append) {
+                $text = rtrim(substr($text, 0, strpos($text, "</p>")), '.') . $append . '</p>';
+            }
         } else {
-            $text = substr($text, 0, strpos($text, "</p>") + 4);
+            // otherwise strip all tags and get the first 275 characters
+            $text = Utility::trimText(strip_tags($text), 275, $append);
+            $text = '<p>' . $text . '</p>';
         }
+
         return $text;
     }
 
