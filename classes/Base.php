@@ -73,6 +73,9 @@ class Base {
         if ($type == 'recent') {
             $order = $order ? $order : 'DESC';
             $this->currentQuery->propertyOrderBy('created', $order);
+        } else if ($type == 'changed') {
+            $order = $order ? $order : 'DESC';
+            $this->currentQuery->propertyOrderBy('changed', $order);
         } else if ($type == 'alpha') {
             $order = $order ? $order : 'ASC';
             $this->currentQuery->propertyOrderBy('title', $order);
