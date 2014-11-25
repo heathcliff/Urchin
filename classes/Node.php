@@ -2,6 +2,13 @@
 
 class Node {
 
+    public static function getTitle($nid = null) {
+        if ($nid) {
+            return db_query("SELECT title FROM {node} WHERE nid = {$nid} LIMIT 1")->fetchField();
+        }
+        return false;
+    }
+
     public static function getAuthor($node = null) {
         if (isset($node)) {
             if (class_exists('UrchinCustomizations') && method_exists('UrchinCustomizations', 'getAuthor')) {
