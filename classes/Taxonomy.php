@@ -57,6 +57,13 @@ class Taxonomy
         return false;
     }
 
+    public static function getName($tid = null) {
+        if ($tid) {
+            return db_query("SELECT name FROM {taxonomy_term_data} WHERE tid = {$tid} LIMIT 1")->fetchField();
+        }
+        return false;
+    }
+
     public static function getTerm($tid = null) {
         if (isset($tid)) {
             $term = taxonomy_term_load($tid);
