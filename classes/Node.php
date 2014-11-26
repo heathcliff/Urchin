@@ -164,25 +164,10 @@ class Node {
                     }
                     return $data;
                 }
-            } else if ($key == 'value') {
+            } else if (in_array($key, array('value', 'nid', 'tid'))) {
                 $sql = "SELECT
                             delta,
-                            {$field}_value
-                        FROM
-                            {field_data_{$field}} field
-                        WHERE
-                            entity_id   = {$node->nid} AND
-                            entity_type = 'node'
-                        ";
-                $result = db_query($sql);
-                $result = $result->fetchAllKeyed(0);
-                if ($result) {
-                    return $result;
-                }
-            } else if ($key == 'nid') {
-                $sql = "SELECT
-                            delta,
-                            {$field}_nid
+                            {$field}_{$key}
                         FROM
                             {field_data_{$field}} field
                         WHERE
