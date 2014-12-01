@@ -284,7 +284,9 @@ class Node {
                     if ($category && !$tags_only) {
                         $or->condition('field_category.field_category_tid', $category, 'IN');
                     }
-                    $query->condition($or);
+                    if (($tags && !$category_only) || ($category && !$tags_only)) {
+                        $query->condition($or);
+                    }
                 }
 
                 $result = $query->execute()->fetchAll(PDO::FETCH_ASSOC);
