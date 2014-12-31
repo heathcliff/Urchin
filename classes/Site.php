@@ -15,8 +15,12 @@ class Site {
         return $base_url.request_uri();
     }
 
-    public static function getSharedPath($view_name) {
-        return path_to_theme() . '/templates/shared/_' . $view_name . '.php';
+    public static function getSharedPath($view_name, $directory = false) {
+        if ($directory) {
+            return path_to_theme() . '/templates/' . $directory . '/_' . $view_name . '.php';
+        } else {
+            return path_to_theme() . '/templates/shared/_' . $view_name . '.php';
+        }
     }
 
     public static function isFirstPage() {
