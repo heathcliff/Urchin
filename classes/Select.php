@@ -92,12 +92,15 @@ class Select extends Base {
         return $this;
     }
 
-    public function groupBy($vocabulary = null) {
+    public function groupBy($vocabulary = null, $nid = null) {
         if (isset($vocabulary)) {
             $field = Taxonomy::getFieldName($vocabulary);
             if ($field) {
                 $this->currentQuery->groupBy($field.'.'.$field.'_tid');
             }
+        }
+        if (isset($nid)) {
+            $this->currentQuery->groupBy('n.nid');
         }
         return $this;
     }
