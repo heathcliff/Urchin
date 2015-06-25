@@ -63,6 +63,11 @@ class Base {
         $this->currentQuery->range(0, $limit);
         return $this;
     }
+    
+    public function range($offset = 0, $limit = 14) {
+        $this->currentQuery->range($offset, $limit);
+        return $this;
+    }
 
     public function pager($limit = 14) {
         $this->currentQuery->pager($limit);
