@@ -64,12 +64,16 @@ class Node {
                     return self::getField($node, 'field_excerpt');
                 }
             } else if (self::getField($node, 'body')) {
-                $body_array = explode("\n", self::getField($node, 'body'));
-                if (isset($body_array[0]) && strlen($body_array[0]) > 0) {
-                    if ($strip_tags) {
-                        return Utility::trimText(strip_tags($body_array[0]), $length);
-                    } else {
-                        return Utility::trimText($body_array[0], $length);
+                if(self::getField($node, 'body', 'summary') && self::getField($node, 'body', 'summary') != ''){
+                    return self::getField($node, 'body', 'summary');
+                } else {
+                    $body_array = explode("\n", self::getField($node, 'body'));
+                    if (isset($body_array[0]) && strlen($body_array[0]) > 0) {
+                        if ($strip_tags) {
+                            return Utility::trimText(strip_tags($body_array[0]), $length);
+                        } else {
+                            return Utility::trimText($body_array[0], $length);
+                        }
                     }
                 }
             }
