@@ -55,7 +55,7 @@ class Select extends Base {
         return $this;
     }
 
-    public function vocabularyTerm($vocabulary, $tid) {
+    public function vocabularyTerm($vocabulary, $tid, $condition = 'IN') {
         if (isset($vocabulary) && isset($tid)) {
             if(!is_array($tid)) {
                 $tid = array($tid);
@@ -63,7 +63,7 @@ class Select extends Base {
             $field = Taxonomy::getFieldName($vocabulary);
             if ($field) {
                 $this->currentQuery->join('field_data_'.$field, $field, 'n.nid = '.$field.'.entity_id');
-                $this->currentQuery->condition($field . '.' . $field . '_tid', $tid, 'IN');
+                $this->currentQuery->condition($field . '.' . $field . '_tid', $tid, $condition);
             }
         }
         return $this;
