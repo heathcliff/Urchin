@@ -63,7 +63,7 @@ class Base {
         $this->currentQuery->range(0, $limit);
         return $this;
     }
-    
+
     public function range($offset = 0, $limit = 14) {
         $this->currentQuery->range($offset, $limit);
         return $this;
@@ -91,13 +91,13 @@ class Base {
         return $this;
     }
 
-    public function vocabularyTerm($vocabulary, $term) {
+    public function vocabularyTerm($vocabulary, $term, $condition = 'IN') {
         if (isset($vocabulary) && isset($term)) {
             if(!is_array($term)) {
                 $term = array($term);
             }
             if (Taxonomy::getFieldName($vocabulary)) {
-                $this->currentQuery->fieldCondition(Taxonomy::getFieldName($vocabulary), 'tid', $term, 'IN');
+                $this->currentQuery->fieldCondition(Taxonomy::getFieldName($vocabulary), 'tid', $term, $condition);
             }
         }
         return $this;
