@@ -47,10 +47,19 @@ class Select extends Base {
         return $this;
     }
 
-    public function sort($type = 'recent', $order = 'DESC') {
-        if($type == 'recent') {
-            $order = isset($order) ? $order : 'DESC';
+    public function sort($type = 'recent', $order = false) {
+        if ($type == 'recent') {
+            $order = $order ? $order : 'DESC';
             $this->currentQuery->orderBy('n.created', $order);
+        } else if ($type == 'changed') {
+            $order = $order ? $order : 'DESC';
+            $this->currentQuery->orderBy('n.changed', $order);
+        } else if ($type == 'alpha') {
+            $order = $order ? $order : 'ASC';
+            $this->currentQuery->orderBy('n.title', $order);
+        } else if ($type == 'sticky') {
+            $order = $order ? $order : 'DESC';
+            $this->currentQuery->orderBy('n.sticky', $order);
         }
         return $this;
     }
