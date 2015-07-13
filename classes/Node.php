@@ -83,22 +83,28 @@ class Node {
 
     public static function getFieldCollection($node = null, $collection = null, $fields = array()) {
         if (isset($node) && isset($collection) && !empty($node->$collection) && !empty($fields)) {
-            $node_collection = entity_load('field_collection_item', array(self::getField($node, $collection)));
+            $node_collection = $node->$collection;
+            $node_language = LANGUAGE_NONE;
             $results = array();
-            foreach ($node_collection as $index => $collection_item) {
-                $temp_fields = array();
-                // loop through each field
-                foreach ($fields as $field) {
-                    if (!empty($field['name'])) {
-                        // set a default key to 'value' if not provided
-                        if (empty($field['key'])) {
-                            $field['key'] = 'value';
+            foreach ($node_collection[$node_language] as $index => $col) {
+                $node_collection = entity_load('field_collection_item', array($col['value']));
+                $temp_results = array();
+                foreach ($node_collection as $index => $collection_item) {
+                    $temp_fields = array();
+                    // loop through each field
+                    foreach ($fields as $field) {
+                        if (!empty($field['name'])) {
+                            // set a default key to 'value' if not provided
+                            if (empty($field['key'])) {
+                                $field['key'] = 'value';
+                            }
+                            $field_name = $field['name'];
+                            $temp_fields[$field_name] = Node::getField($collection_item, $field_name, $field['key']);
                         }
-                        $field_name = $field['name'];
-                        $temp_fields[$field_name] = Node::getField($collection_item, $field_name, $field['key']);
                     }
+                    $temp_results[] = $temp_fields;
                 }
-                $results[] = $temp_fields;
+                $results[] = $temp_results;
             }
             return $results;
         }
